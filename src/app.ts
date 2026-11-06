@@ -5,7 +5,7 @@ import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
 import prisma from './config/db';
-import { AppError } from './lib/errors';
+import { AppError, banglaForFailure } from './lib/errors';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
@@ -16,6 +16,9 @@ import vendorRoutes from './routes/vendorRoutes';
 import expertRoutes from './routes/expertRoutes';
 import aiRoutes from './routes/aiRoutes';
 import adminRoutes from './routes/adminRoutes';
+import newsRoutes from './routes/newsRoutes';
+import weatherRoutes from './routes/weatherRoutes';
+import { cropRouter, metaRouter } from './routes/cropRoutes';
 
 const app = express();
 
@@ -25,7 +28,11 @@ app.use(helmet());
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
     // No Origin header: native mobile clients and curl, not a browser.
-    if (!origin || env.CORS_ORIGINS.includes(origin)) {
+    if (
+      !origin ||
+      env.CORS_ORIGINS.includes(origin) ||
+      (env.NODE_ENV === 'development' && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))
+    ) {
       callback(null, true);
       return;
     }
@@ -39,11 +46,34 @@ app.use(cors(corsOptions));
 
 app.use(express.json({ limit: '100kb' }));
 
+// Older controllers still return a direct JSON error object. Put Bangla on
+// every one of them centrally instead of letting an English sentence leak.
+app.use((_req, res, next) => {
+  const sendJson = res.json.bind(res);
+  res.json = ((body: unknown) => {
+    if (body && typeof body === 'object' && !Array.isArray(body)) {
+      const payload = body as Record<string, unknown>;
+      if (payload.success === false && !payload.message_bn) {
+        payload.message_bn = banglaForFailure(
+          typeof payload.code === 'string' ? payload.code : undefined,
+          res.statusCode,
+        );
+      }
+    }
+    return sendJson(body);
+  }) as typeof res.json;
+  next();
+});
+
 const uploadsDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
-app.use('/uploads', express.static(uploadsDir));
+// Local files are a development-only fallback. Production uses a private
+// Supabase bucket with short-lived signed URLs.
+if (env.NODE_ENV !== 'production') {
+  app.use('/uploads', express.static(uploadsDir));
+}
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -53,7 +83,14 @@ app.use('/api/products', productRoutes);
 app.use('/api/vendor', vendorRoutes);
 app.use('/api/expert', expertRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/voice', aiRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/weather', weatherRoutes);
+app.use('/api/meta', metaRouter);
+app.use('/api/crops', cropRouter);
+// The app calls the calendar at the top level (`GET /calendar?crop=`).
+app.use('/api/calendar', cropRouter);
 
 app.get('/health', async (_req, res) => {
   await prisma.$queryRaw`SELECT 1`;
@@ -64,3 +101,4 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;
+
