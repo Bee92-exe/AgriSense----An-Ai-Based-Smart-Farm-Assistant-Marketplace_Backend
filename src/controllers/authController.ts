@@ -76,8 +76,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         await tx.vendor.create({
           data: {
             userId: user.id,
-            shopName: input.shop_name || input.name,
-            businessLicense: input.license_no || null,
+            shopName: input.shop_name!,
+            businessLicense: input.license_no!,
             verificationStatus: 'PENDING',
           },
         });
@@ -85,8 +85,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         await tx.expert.create({
           data: {
             userId: user.id,
-            specialization: input.specialization || 'General Agriculture',
-            certification: input.certification || null,
+            specialization: input.specialization!,
+            certification: input.certification!,
           },
         });
       }
