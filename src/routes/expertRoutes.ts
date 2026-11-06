@@ -5,19 +5,22 @@ import {
   getExpertArticles,
   getExpertStats,
   getPendingDiagnoses,
+  needsRetake,
   reviewDiagnosis,
 } from '../controllers/expertController';
-import { authenticateToken, requireActiveAccount } from '../middleware/authMiddleware';
+import { authenticateToken, requireActiveAccount, requireRole } from '../middleware/authMiddleware';
 
 const router = Router();
 
 router.get('/articles/public', getAllArticles); // Public feed for the advisory screen
 
-// Pending experts can sign in, but cannot review cases until approved.
-router.get('/stats', authenticateToken, requireActiveAccount, getExpertStats);
-router.get('/diagnoses/pending', authenticateToken, requireActiveAccount, getPendingDiagnoses);
-router.put('/diagnoses/:id/review', authenticateToken, requireActiveAccount, reviewDiagnosis);
-router.get('/articles', authenticateToken, requireActiveAccount, getExpertArticles);
-router.post('/articles', authenticateToken, requireActiveAccount, createArticle);
+router.use(authenticateToken, requireActiveAccount, requireRole('EXPERT'));
+
+router.get('/stats', getExpertStats);
+router.get('/diagnoses/pending', getPendingDiagnoses);
+router.put('/diagnoses/:id/review', reviewDiagnosis);
+router.post('/diagnoses/:id/needs-retake', needsRetake);
+router.get('/articles', getExpertArticles);
+router.post('/articles', createArticle);
 
 export default router;
