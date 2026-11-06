@@ -1,0 +1,375 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ------------------------------------------
+// Enums
+// ------------------------------------------
+
+enum Role {
+  FARMER
+  VENDOR
+  EXPERT
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  REMOVED
+}
+
+/// Exactly the four categories the app already renders (`NewsCategory` in
+/// enums.dart). A fifth value here would not fail loudly — the client falls back
+/// to "disease" — so the wire contract deliberately stays at four.
+enum NewsCategory {
+  DISEASE
+  PEST
+  VIRUS
+  NUTRIENT_DEFICIENCY
+}
+
+/// Mirrors the app's `Severity` (low/medium/high/urgent).
+enum NewsSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+/// A Krishi Barta item. Only `PUBLISHED` rows ever reach a farmer; anything the
+/// RSS ingest pulls in lands as `DRAFT` so a human approves it first.
+enum NewsStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ------------------------------------------
+// Core User Management
+// ------------------------------------------
+
+model User {
+  id                  String     @id @default(uuid()) @db.Uuid
+  name                String     @db.VarChar(120)
+  mobileNumber        String     @unique @db.VarChar(16)
+  passwordHash        String     @db.VarChar(255)
+  role                Role       @default(FARMER)
+  status              UserStatus @default(ACTIVE)
+  location            String?    @db.VarChar(120)
+  avatarUrl           String?    @db.Text
+  tokenVersion        Int        @default(0)
+  failedLoginAttempts Int        @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  passwordChangedAt   DateTime?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  // Relations
+  farmerProfile       Farmer?
+  vendorProfile       Vendor?
+  expertProfile       Expert?
+  diagnoses           Diagnosis[]
+  orders              Order[]
+  feedbacks           Feedback[]
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  adminAuditLogs      AdminAuditLog[]      @relation("AdminAuditActor")
+  newsAuthored        NewsItem[]           @relation("NewsAuthor")
+  newsReads           NewsRead[]           @relation("NewsReader")
+
+  @@index([role])
+  @@index([status])
+}
+
+model Farmer {
+  id              String  @id @default(uuid()) @db.Uuid
+  farmLocation    String? @db.VarChar(160)
+  cropPreferences String? @db.Text
+  landSize        Float?
+
+  userId          String  @unique @db.Uuid
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Vendor {
+  id                 String    @id @default(uuid()) @db.Uuid
+  shopName           String    @db.VarChar(160)
+  verificationStatus String    @default("PENDING") @db.VarChar(20)
+  businessLicense    String?   @db.VarChar(160)
+
+  userId             String    @unique @db.Uuid
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products           Product[]
+}
+
+model Expert {
+  id             String  @id @default(uuid()) @db.Uuid
+  specialization String  @db.VarChar(120)
+  certification  String? @db.VarChar(160)
+  verified       Boolean @default(false)
+
+  userId         String  @unique @db.Uuid
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  reviewedDiagnoses Diagnosis[]     @relation("ExpertReviews")
+  knowledgeBase     KnowledgeBase[]
+}
+
+// ------------------------------------------
+// Authentication & Sessions
+// ------------------------------------------
+
+model RefreshToken {
+  id                  String    @id @default(uuid()) @db.Uuid
+  tokenHash           String    @unique @db.VarChar(64)
+  userId              String    @db.Uuid
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt           DateTime
+  revokedAt           DateTime?
+  replacedByTokenHash String?   @db.VarChar(64)
+  createdAt           DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tokenHash String    @unique @db.VarChar(64)
+  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+/// Every administrative approval or status change. Kept separate from the
+/// operational logs so an approval can always be traced to the person who made
+/// it, even after the target account is removed.
+model AdminAuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String   @db.Uuid
+  actor      User     @relation("AdminAuditActor", fields: [actorId], references: [id], onDelete: Cascade)
+  action     String   @db.VarChar(40)
+  targetType String   @db.VarChar(20)
+  targetId   String   @db.Uuid
+  reason     String?  @db.Text
+  message    String   @db.VarChar(500)
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([targetType, targetId])
+}
+
+// ------------------------------------------
+// AI Diagnosis Module
+// ------------------------------------------
+
+model Diagnosis {
+  id                String   @id @default(uuid()) @db.Uuid
+  imageUrl          String   @db.Text
+  aiDetectedDisease String   @db.VarChar(160)
+  confidenceScore   Float
+  treatmentSteps    String   @db.Text
+  status            String   @default("COMPLETED") @db.VarChar(30) // PENDING_REVIEW, COMPLETED
+  timestamp         DateTime @default(now())
+  clientUuid        String?  @unique @db.Uuid
+
+  expertReview      String?  @db.Text
+  expertId          String?  @db.Uuid
+  expert            Expert?  @relation("ExpertReviews", fields: [expertId], references: [id])
+
+  userId            String   @db.Uuid
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expertId])
+  @@index([status])
+}
+
+// ------------------------------------------
+// Marketplace Module (Haat_Bazar)
+// ------------------------------------------
+
+model Product {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(160)
+  category    String   @db.VarChar(60)
+  description String?  @db.Text
+  price       Float
+  stockLevel  Int
+  rating      Float    @default(0.0)
+  imageUrl    String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendorId    String   @db.Uuid
+  vendor      Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  orderDetails OrderDetail[]
+
+  @@index([vendorId])
+  @@index([category])
+}
+
+model Order {
+  id              String   @id @default(uuid()) @db.Uuid
+  orderDate       DateTime @default(now())
+  status          String   @default("PENDING") @db.VarChar(30)
+  totalAmount     Float
+  paymentMethod   String   @db.VarChar(40)
+  deliveryAddress String   @db.Text
+
+  userId          String   @db.Uuid
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  details         OrderDetail[]
+
+  @@index([userId])
+}
+
+model OrderDetail {
+  orderId   String  @db.Uuid
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String  @db.Uuid
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  quantity  Int
+  subtotal  Float
+
+  @@id([orderId, productId])
+  @@index([productId])
+}
+
+// ------------------------------------------
+// Advisory & System Data
+// ------------------------------------------
+
+model WeatherSoilData {
+  id            String   @id @default(uuid()) @db.Uuid
+  district      String   @unique @db.VarChar(80)
+  soilType      String   @db.VarChar(60)
+  temperature   Float
+  humidity      Float
+  rainfall      Float
+  weatherAlerts String?  @db.Text
+  updatedAt     DateTime @updatedAt
+}
+
+model KnowledgeBase {
+  id                String   @id @default(uuid()) @db.Uuid
+  diseaseName       String   @unique @db.VarChar(160)
+  diseaseData       String   @db.Text
+  treatmentProtocol String   @db.Text
+  cropType          String   @db.VarChar(80)
+  updatedAt         DateTime @updatedAt
+
+  expertId          String   @db.Uuid
+  expert            Expert   @relation(fields: [expertId], references: [id])
+
+  @@index([expertId])
+}
+
+model Feedback {
+  id         String   @id @default(uuid()) @db.Uuid
+  rating     Float
+  comments   String?  @db.Text
+  targetType String   @db.VarChar(30) // PRODUCT, DIAGNOSIS, APP
+  targetId   String?  @db.Uuid // Reference ID if applicable
+  createdAt  DateTime @default(now())
+
+  userId     String   @db.Uuid
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ------------------------------------------
+// Krishi Barta (news)
+// ------------------------------------------
+
+/// One news card. Only `PUBLISHED` rows are ever served to a farmer; RSS
+/// ingest always lands as `DRAFT` so a human approves it first.
+model NewsItem {
+  id                String       @id @default(uuid()) @db.Uuid
+  titleBn           String       @db.VarChar(200)
+  titleEn           String?      @db.VarChar(200)
+  summaryBn         String       @db.Text
+  summaryEn         String?      @db.Text
+  symptomsBn        String?      @db.Text
+  advisedActionBn   String?      @db.Text
+  category          NewsCategory @default(DISEASE)
+  crop              String?      @db.VarChar(40)
+  severity          NewsSeverity @default(LOW)
+  affectedDistricts String[]     @default([])
+  sourceName        String       @db.VarChar(160)
+  sourceUrl         String?      @db.Text
+  verifiedBy        String?      @db.VarChar(120)
+  imageUrls         String[]     @default([])
+  isUrgent          Boolean      @default(false)
+  status            NewsStatus   @default(DRAFT)
+
+  /// Feed GUID/link, so re-running the ingest cannot duplicate an item.
+  externalId        String?      @unique @db.VarChar(300)
+
+  publishedAt       DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  authorId          String?      @db.Uuid
+  author            User?        @relation("NewsAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  reads             NewsRead[]
+
+  @@index([status, publishedAt])
+  @@index([category])
+  @@index([crop])
+}
+
+/// Per-farmer read receipt (FR-46). The id pair makes it idempotent.
+model NewsRead {
+  newsId String   @db.Uuid
+  news   NewsItem @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  userId String   @db.Uuid
+  user   User     @relation("NewsReader", fields: [userId], references: [id], onDelete: Cascade)
+  readAt DateTime @default(now())
+
+  @@id([newsId, userId])
+  @@index([userId])
+}
+
+// ------------------------------------------
+// RAG knowledge chunks
+// ------------------------------------------
+
+/// Source-grounded advisory chunks. The embedding is managed by raw SQL
+/// because Prisma does not yet model pgvector columns as insertable fields.
+model KnowledgeChunk {
+  id        String                 @id @default(uuid()) @db.Uuid
+  chunkId   String                 @unique @map("chunk_id") @db.VarChar(100)
+  crop      String                 @db.VarChar(80)
+  disease   String                 @db.VarChar(160)
+  diseaseId String?                @map("disease_id") @db.VarChar(80)
+  diseaseBn String                 @map("disease_bn") @db.VarChar(160)
+  content   String                 @db.Text
+  metadata  Json?
+  embedding Unsupported("vector(768)")?
+  createdAt DateTime               @default(now()) @map("created_at")
+
+  @@index([diseaseId])
+  @@map("knowledge_chunks")
+}
