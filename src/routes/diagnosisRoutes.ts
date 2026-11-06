@@ -1,24 +1,27 @@
 import { Router } from 'express';
 import multer from 'multer';
-import path from 'path';
-import { scanLeaf } from '../controllers/diagnosisController';
-import { authenticateToken } from '../middleware/authMiddleware';
+import {
+  scanLeaf,
+  getDiagnosisHistory,
+  getDiagnosisDetail,
+  requestReview,
+} from '../controllers/diagnosisController';
+import { authenticateToken, requireActiveAccount, requireRole } from '../middleware/authMiddleware';
 
 const router = Router();
 
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+// Configure multer storage for temporary upload handling
+const upload = multer({
+  dest: 'uploads/',
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB max upload
   }
 });
 
-const upload = multer({ storage });
-
 // Routes
-router.post('/scan', authenticateToken, upload.single('image'), scanLeaf);
+router.post('/scan', authenticateToken, requireActiveAccount, requireRole('FARMER'), upload.single('image'), scanLeaf);
+router.get('/history', authenticateToken, requireActiveAccount, requireRole('FARMER'), getDiagnosisHistory);
+router.post('/:id/review', authenticateToken, requireActiveAccount, requireRole('FARMER'), requestReview);
+router.get('/:id', authenticateToken, requireActiveAccount, requireRole('FARMER'), getDiagnosisDetail);
 
 export default router;
