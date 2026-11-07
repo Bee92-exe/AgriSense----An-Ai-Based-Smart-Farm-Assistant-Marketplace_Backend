@@ -24,6 +24,17 @@ const envSchema = z.object({
   AUTH_RESET_TOKEN_TTL_MINUTES: z.coerce.number().int().min(5).max(1440).default(30),
   AUTH_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(30),
   CORS_ORIGINS: z.string().default(''),
+  GEMINI_API_KEY: z.string().optional(),
+  SUPABASE_URL: z.string().optional(),
+  SUPABASE_ANON_KEY: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  SUPABASE_STORAGE_BUCKET: z.string().default('crop-scans'),
+  WEATHER_API_KEY: z.string().optional(),
+  WEATHER_CACHE_MINUTES: z.coerce.number().int().min(1).max(180).default(15),
+  /// Comma-separated RSS URLs for the Krishi Barta ingest.
+  RSS_FEEDS: z.string().default(''),
+  PUBLIC_API_URL: z.string().url().optional(),
+  AI_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(30),
 });
 
 const parsed = envSchema.safeParse({ ...process.env, PORT: port });
