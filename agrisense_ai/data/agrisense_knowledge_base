@@ -1,0 +1,1440 @@
+{
+  "RICE_BLAST": {
+    "disease_id": "RICE_BLAST",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Blast",
+    "disease_bn": "ব্লাস্ট",
+    "pathogen": "Pyricularia oryzae (Magnaporthe oryzae)",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Use tolerant varieties BR-12, 15, 16, 24, BRRI dhan33; use seed from healthy plants; balanced fertilizer; organic manure; keep standing water",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Apply an approved fungicide at initial infection only if needed (source names no product or dose)",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "not specified in source",
+        "timing": "initial stage of infection",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Source states Nativo 75 WP/Topper 0.6 g/L or Amistar Top 325 SP 1 mL/L water.",
+        "description_bn": "নাটিভো ৭৫ ডব্লিউপি/ট্টপার ০.৬ গ্রাম/লিটার অথবা এমিস্টার টপ ৩২৫ এসপি ১ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "0.6 g/L or 1 mL/L as stated",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/76",
+        "flags": "Commercial names and spelling appear as published; verify current Bangladesh registration, exact formulation, label dose, and use before operationalizing."
+      }
+    ]
+  },
+  "RICE_BS": {
+    "disease_id": "RICE_BS",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Brown Spot",
+    "disease_bn": "বাদামী দাগ",
+    "pathogen": "Cochliobolus miyabeanus",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Resistant variety; healthy seed; hot water seed soak 53-54 C or cold water soak; keep seedbed moist; organic and balanced fertilizer",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "53-54 C hot water",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Seed treatment with fungicide",
+        "description_bn": "",
+        "active_ingredient": "Thiram; Captan; Carbendazim (Bavistin)",
+        "product_name": "Bavistin",
+        "dose": "not specified in source",
+        "timing": "seed treatment",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      },
+      {
+        "measure_type": "cultural",
+        "description_en": "Nutrient management; apply potash + Thiovit (as stated by source).",
+        "description_bn": "সার ব্যবস্থাপনা; পটাশ+থিওভিট প্রয়োগ।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "Not specified on source page",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/76",
+        "flags": "Source provides management phrase but no product dose or detailed protocol."
+      }
+    ]
+  },
+  "RICE_BLB": {
+    "disease_id": "RICE_BLB",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Bacterial Leaf Blight",
+    "disease_bn": "ব্যাকটেরিয়াল পাতা পোড়া",
+    "pathogen": "Xanthomonas oryzae pv. oryzae",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Tolerant variety; balanced fertilizer, urea in three instalments; withhold irrigation 7-8 days to dry soil; apply potash",
+        "description_bn": "",
+        "active_ingredient": "Potash fertilizer",
+        "product_name": "",
+        "dose": "5 kg potash per bigha (0.33 acre)",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "bigha_unit_as_stated_in_source"
+      }
+    ]
+  },
+  "RICE_SHB": {
+    "disease_id": "RICE_SHB",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Sheath Blight",
+    "disease_bn": "শীথ ব্লাইট",
+    "pathogen": "Rhizoctonia solani",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Resistant varieties BR-22, BR-23, BRRI dhan34, BRRI dhan41; spacing 25x20 or 25x15 cm, 3 seedlings per hill; remove floating debris; burn dead plants; crop rotation; correct urea dose",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Use an approved fungicide (no product or dose given)",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "not specified in source",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "RICE_TUNGRO": {
+    "disease_id": "RICE_TUNGRO",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Tungro",
+    "disease_bn": "টুংরো",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Tolerant varieties; burn or bury Arali grass; light trap and hand net for vector",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "RICE_LSCALD": {
+    "disease_id": "RICE_LSCALD",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Leaf Scald",
+    "disease_bn": "পাতা ঝলসানো রোগ",
+    "pathogen": "Microdochium oryzae",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Tolerant variety; no excess urea; keep land dry for some days when disease appears; seed from healthy plants",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "If needed, fungicide containing 80% sulphur",
+        "description_bn": "",
+        "active_ingredient": "Sulphur 80%",
+        "product_name": "",
+        "dose": "not specified in source",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "RICE_SHROT": {
+    "disease_id": "RICE_SHROT",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Sheath Rot",
+    "disease_bn": "খোল পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Burn affected straw; healthy treated seed; tolerant varieties BR-2,3,5,10,16,25, BRRI dhan26,32,33; balanced fertilizer; keep land dry when disease appears",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Approved fungicide if needed (no product or dose given)",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "not specified in source",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "RICE_UFRA": {
+    "disease_id": "RICE_UFRA",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Ufra",
+    "disease_bn": "উফরা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Tolerant varieties Raida and Bajail; burn leftover straw; control grass weeds; cut top of leaves at initial attack",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Source recommends Furadan 5G against the nematode",
+        "description_bn": "",
+        "active_ingredient": "Carbofuran",
+        "product_name": "Furadan 5G",
+        "dose": "2.5 kg per bigha early crop stage; seedling dip 15 g per litre water overnight",
+        "timing": "early crop stage",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "REGULATORY_CHECK: 'Furadan 3G' appears in Annex 1 banned-pesticide list of the same document; do not surface to farmers without confirming current DAE status"
+      }
+    ]
+  },
+  "RICE_FOOTROT": {
+    "disease_id": "RICE_FOOTROT",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Foot Rot and Bakanae",
+    "disease_bn": "গোড়া পচা ও বাকানা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Resistant variety; disease-free seed; do not reuse seedbed land; seed soak in fungicide water; soft moist seedbed; dry land after identification; discard infected seedlings; burn infected plants; rotation",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "RICE_BLS": {
+    "disease_id": "RICE_BLS",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Bacterial Leaf Streak",
+    "disease_bn": "ব্যাকটেরিয়াল পাতার ডোরা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Resistant variety; control insects; drain field; balanced fertilizer with less urea",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "RICE_SEEDBLIGHT": {
+    "disease_id": "RICE_SEEDBLIGHT",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Seedling Blight",
+    "disease_bn": "চারা পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Treat seed with Vitavax or Thiram before sowing; mix rice bran into seedbed soil; avoid sowing in extreme cold; keep seedbed under standing water some days",
+        "description_bn": "",
+        "active_ingredient": "Carboxin (Vitavax); Thiram",
+        "product_name": "Vitabrex/Vitavax; Thirum",
+        "dose": "not specified in source",
+        "timing": "before sowing",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing; source spelling 'Vitabrex' and 'Thirum' kept as written"
+      }
+    ]
+  },
+  "RICE_DAMP": {
+    "disease_id": "RICE_DAMP",
+    "crop_en": "Rice",
+    "crop_bn": "ধান",
+    "disease_en": "Seedling Damping Off",
+    "disease_bn": "চারা গলানো রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Seed treatment before sowing",
+        "description_bn": "",
+        "active_ingredient": "Captan; Copper oxychloride",
+        "product_name": "",
+        "dose": "4 g Captan per kg seed OR 2 g copper oxychloride per kg seed",
+        "timing": "before sowing",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "cultural",
+        "description_en": "Do not keep seedbed under water during germination; avoid sowing in heavy cold; cover seedbed with polythene in cold spells",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "WHEAT_BLAST": {
+    "disease_id": "WHEAT_BLAST",
+    "crop_en": "Wheat",
+    "crop_bn": "গম",
+    "disease_en": "Wheat Blast",
+    "disease_bn": "গমের ব্লাস্ট",
+    "pathogen": "Magnaporthe oryzae pathotype Triticum",
+    "primary_source_id": "S3",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Grow blast-resistant variety BARI Gom 33 as first line of defence (released 2017)",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "BARI Gom 33",
+        "dose": "",
+        "timing": "",
+        "source_id": "S5",
+        "source_name": "Mix and manage: cultivar mixtures under wheat blast pressure (BWMRI/CIMMYT), PMC11364159",
+        "source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11364159/",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Fungicide sprays at heading; best field results with three products",
+        "description_bn": "",
+        "active_ingredient": "Tebuconazole 50% + Trifloxystrobin 25% (Nativo 75WG); Azoxystrobin 20% + Difenoconazole 12.5% (Amistar Top 325SC); Pyraclostrobin 5% + Metiram 55% (Cabrio Top 60WG)",
+        "product_name": "Nativo 75WG; Amistar Top 325SC; Cabrio Top 60WG",
+        "dose": "dose not given in abstract",
+        "timing": "twice at 13-15 day interval starting at heading stage",
+        "source_id": "S2",
+        "source_name": "Roy et al. 2021, Evaluation of fungicides against wheat blast in Bangladesh, Archives of Phytopathology and Plant Protection 54(5/6):252-260 (DOI 10.1080/03235408.2020.1827652)",
+        "source_url": "https://eld.bl.uk/catalog/100138440299_0x000001",
+        "flags": "dose_missing"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Mixture of tebuconazole + tricyclazole + pyraclostrobin gave 97% blast reduction, better than single compounds; sprays at booting, pre-heading, heading",
+        "description_bn": "",
+        "active_ingredient": "Tebuconazole; Tricyclazole; Pyraclostrobin",
+        "product_name": "Nativo + Trooper 75WP (tricyclazole) cocktail; Filia (Tricyclazole 40% + Propiconazole 12.5%) + Seltima (Pyraclostrobin 10%)",
+        "dose": "Table text (garbled in extraction): Nativo 6 g per 10 L; Filia 20 ml per 10 L - verify in PDF",
+        "timing": "three sprays from booting at 7 day interval (net house)",
+        "source_id": "S3",
+        "source_name": "Kabir et al. 2021, Fungicide spray schedule for wheat blast, Int. J. Agril. Res. Innov. Tech. 11(1):10-16 (DOI 10.3329/ijarit.v11i1.54461)",
+        "source_url": "https://ageconsearch.umn.edu/record/312377/files/2%29%20IJARIT%200327.pdf",
+        "flags": "verify_dose_in_original_pdf"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Pot study: Nativo and Trooper best; two sprays at pre-heading",
+        "description_bn": "",
+        "active_ingredient": "Tebuconazole + Trifloxystrobin; Tricyclazole",
+        "product_name": "Nativo 75WG; Trooper 75WP",
+        "dose": "not in abstract",
+        "timing": "twice at 10 day interval, pre-heading",
+        "source_id": "S4",
+        "source_name": "Farthouse et al. 2022, Screening of fungicides against wheat blast in Bangladesh, J. Agroforestry and Environment (pot study)",
+        "source_url": "https://aminer.org/pub/62abf7455aee126c0f636ff8/screening-of-different-fungicides-in-controlling-wheat-blast-in-bangladesh",
+        "flags": "pot_study_only; dose_missing"
+      },
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Source states Nativo 75 WG at 6 g per decimal, or seed treatment with Noen at 2–3 g/kg.",
+        "description_bn": "নাটিভো ৭৫ ডব্লিউজি শতাংশ প্রতি ০৬ গ্রাম প্রয়োগ করতে হবে অথবা ২-৩ গ্রাম/কেজি হারে নোয়েন দিয়ে বীজ শোধন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "6 g/decimal or 2–3 g/kg seed",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/9",
+        "flags": "Dose is reproduced as published; verify product identity, formulation, units, and current registration before any use."
+      }
+    ]
+  },
+  "POT_LB": {
+    "disease_id": "POT_LB",
+    "crop_en": "Potato",
+    "crop_bn": "আলু",
+    "disease_en": "Late Blight",
+    "disease_bn": "নাবি ধসা",
+    "pathogen": "Phytophthora infestans",
+    "primary_source_id": "S6",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Mancozeb protectant and Ridomil MZ 63.5 (metalaxyl + mancozeb) are the most commonly used fungicides; trial of 13 fungicides conducted",
+        "description_bn": "",
+        "active_ingredient": "Mancozeb; Metalaxyl + Mancozeb",
+        "product_name": "Ridomil MZ 63.5",
+        "dose": "dose not in retrieved text",
+        "timing": "",
+        "source_id": "S6",
+        "source_name": "Anwar et al. 2015, Efficacy of fungicides in controlling late blight of potato, BARI, Progressive Agriculture 26(2):103-108",
+        "source_url": "https://banglajol.info/index.php/PA/article/view/25963",
+        "flags": "dose_missing"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Metalaxyl resistance reported in Bangladeshi P. infestans; rely on rotation of fungicide groups, not higher dose",
+        "description_bn": "",
+        "active_ingredient": "Metalaxyl (resistance)",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S7",
+        "source_name": "Islam et al. 2022, Potential chemical fungicides for potato late blight in Bangladesh, Asian Australas. J. Biosci. Biotechnol. 7(1):23-35 (BAU)",
+        "source_url": "https://banglajol.info/index.php/AAJBB/article/download/59386/40980",
+        "flags": "resistance_warning"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Best performer in a Bangladesh-based test when applied preventively (book abstract by BAU-linked author)",
+        "description_bn": "",
+        "active_ingredient": "Cymoxanil 8% + Mancozeb 64%",
+        "product_name": "Sunoxanil 72WP",
+        "dose": "dose not in retrieved text",
+        "timing": "prophylactic",
+        "source_id": "S10",
+        "source_name": "Siddique, Late Blight Diseases Management of Potatoes (book listing, secondary source; author at Ferdous Biotech, Dhaka)",
+        "source_url": "https://buecher.de/artikel/buch/late-blight-diseases-management-of-potatoes/47118716",
+        "flags": "secondary_source; dose_missing"
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Mancozeb 2 g/L water, as stated by source.",
+        "description_bn": "ম্যানকোজেব ২ গ্রাম/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2 g/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/52",
+        "flags": "Cross-check against AIS potato late-blight article and current DAE registration/label; do not treat this portal text alone as current product authorization."
+      }
+    ]
+  },
+  "POT_EB": {
+    "disease_id": "POT_EB",
+    "crop_en": "Potato",
+    "crop_bn": "আলু",
+    "disease_en": "Early Blight",
+    "disease_bn": "আগাম ধসা",
+    "pathogen": "Alternaria solani",
+    "primary_source_id": "S8",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Fungicide trial: Bicozeb 80WP (mancozeb) significant and cost-effective; Rovral 50WP (iprodione) also good",
+        "description_bn": "",
+        "active_ingredient": "Mancozeb; Iprodione",
+        "product_name": "Bicozeb 80WP; Rovral 50WP",
+        "dose": "dose not in retrieved text",
+        "timing": "",
+        "source_id": "S8",
+        "source_name": "Early blight of potato fungicide trial, Sher-e-Bangla Agricultural University thesis",
+        "source_url": "https://archive.saulibrary.edu.bd/handle/123456789/3453",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "TOM_EB": {
+    "disease_id": "TOM_EB",
+    "crop_en": "Tomato",
+    "crop_bn": "টমেটো",
+    "disease_en": "Early Blight (Alternaria leaf blight)",
+    "disease_bn": "আগাম ধসা",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "biological",
+        "description_en": "Seed treatment with tricho-solution or garlic tablet; field sanitation; spray tricho-solution 3% weekly",
+        "description_bn": "",
+        "active_ingredient": "Trichoderma",
+        "product_name": "tricho-solution",
+        "dose": "3%",
+        "timing": "every 7 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Spray Dithane M-45",
+        "description_bn": "",
+        "active_ingredient": "Mancozeb",
+        "product_name": "Dithane M-45",
+        "dose": "not specified in source",
+        "timing": "every 7 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing; REGULATORY_CHECK: some mancozeb brand registrations (e.g. Manzate 200) appear in Annex 1"
+      }
+    ]
+  },
+  "TOM_LB": {
+    "disease_id": "TOM_LB",
+    "crop_en": "Tomato",
+    "crop_bn": "টমেটো",
+    "disease_en": "Late Blight",
+    "disease_bn": "নাবি ধসা",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Disease-free seed; spray BAU-Biofungicide 3%; spray Mancozeb",
+        "description_bn": "",
+        "active_ingredient": "Mancozeb",
+        "product_name": "BAU-Biofungicide",
+        "dose": "3% (biofungicide); mancozeb dose not specified",
+        "timing": "every 7 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "TOM_BW": {
+    "disease_id": "TOM_BW",
+    "crop_en": "Tomato",
+    "crop_bn": "টমেটো",
+    "disease_en": "Bacterial Wilt",
+    "disease_bn": "ব্যাকটেরিয়াজনিত ঢলে পড়া",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Disease-free seed and seedbed; if field contaminated rotate with cereals at least 3 years",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "TOM_LCV": {
+    "disease_id": "TOM_LCV",
+    "crop_en": "Tomato",
+    "crop_bn": "টমেটো",
+    "disease_en": "Leaf Curl (virus, whitefly-transmitted)",
+    "disease_bn": "পাতা কুঁকড়ানো",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Seedlings under net; barrier crops; yellow sticky traps; uproot infected plants and weeds",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Spray Dimethoate against whitefly vector",
+        "description_bn": "",
+        "active_ingredient": "Dimethoate",
+        "product_name": "",
+        "dose": "not specified in source",
+        "timing": "every 10 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing; check_current_registration"
+      }
+    ]
+  },
+  "BRI_FRUITROT": {
+    "disease_id": "BRI_FRUITROT",
+    "crop_en": "Brinjal",
+    "crop_bn": "বেগুন",
+    "disease_en": "Fruit and Stem Rot / Fruit Blight",
+    "disease_bn": "ফল ও কাণ্ড পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Pathogen-free seed; 3-4 year rotation; destroy infected material; control solanaceous weeds; resistant varieties Jessore local, Kata begun, Isharwardi-1; mulch and furrow irrigation",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "BAU-Biofungicide spray; Bavistin as protectant",
+        "description_bn": "",
+        "active_ingredient": "Carbendazim",
+        "product_name": "Bavistin; BAU-Biofungicide",
+        "dose": "Bavistin 2 g per litre; BAU-Biofungicide 3%",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "BRI_BW": {
+    "disease_id": "BRI_BW",
+    "crop_en": "Brinjal",
+    "crop_bn": "বেগুন",
+    "disease_en": "Bacterial Wilt",
+    "disease_bn": "ব্যাকটেরিয়াজনিত ঢলে পড়া",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Dip seed before sowing; avoid rotation with okra, tomato, potato; remove affected plants",
+        "description_bn": "",
+        "active_ingredient": "Streptomycin sulphate/tetracycline (Streptocycline)",
+        "product_name": "Streptocycline",
+        "dose": "1 g per 40 litres water, seed dip 30 minutes",
+        "timing": "before sowing",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "BRI_RKN": {
+    "disease_id": "BRI_RKN",
+    "crop_en": "Brinjal",
+    "crop_bn": "বেগুন",
+    "disease_en": "Root Knot Nematode",
+    "disease_bn": "শিকড়ের গিঁট রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Remove weed hosts; soil solarisation; fallow with deep ploughing; neem cake 250 kg/ha",
+        "description_bn": "",
+        "active_ingredient": "Neem cake",
+        "product_name": "",
+        "dose": "250 kg per ha",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "chemical",
+        "description_en": "Carbofuran 3G granules",
+        "description_bn": "",
+        "active_ingredient": "Carbofuran",
+        "product_name": "",
+        "dose": "1 kg a.i. per ha",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "REGULATORY_CHECK: 'Furadan 3G' appears in Annex 1 banned list of the same document"
+      }
+    ]
+  },
+  "CUC_PM": {
+    "disease_id": "CUC_PM",
+    "crop_en": "Cucurbits",
+    "crop_bn": "কুমড়া জাতীয় সবজি",
+    "disease_en": "Powdery Mildew",
+    "disease_bn": "পাউডারি মিলডিউ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Wettable sulphur or dusting sulphur; Thiovit; BAU-Biofungicide",
+        "description_bn": "",
+        "active_ingredient": "Sulphur",
+        "product_name": "Thiovit; BAU-Biofungicide",
+        "dose": "Wettable sulphur 0.2%; Thiovit 2 g per litre; BAU-Biofungicide 3%",
+        "timing": "Thiovit weekly; sulphur once or twice per season",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "cultural",
+        "description_en": "Avoid crowded planting; field sanitation",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "CUC_MV": {
+    "disease_id": "CUC_MV",
+    "crop_en": "Cucurbits",
+    "crop_bn": "কুমড়া জাতীয় সবজি",
+    "disease_en": "Mosaic Virus",
+    "disease_bn": "মোজাইক ভাইরাস",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Spray insecticide to suppress insect vectors",
+        "description_bn": "",
+        "active_ingredient": "Oxydemeton-methyl (Metasystox)",
+        "product_name": "Metasystox",
+        "dose": "0.1%",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "check_current_registration"
+      }
+    ]
+  },
+  "CUC_FR": {
+    "disease_id": "CUC_FR",
+    "crop_en": "Cucurbits",
+    "crop_bn": "কুমড়া জাতীয় সবজি",
+    "disease_en": "Fruit Rot",
+    "disease_bn": "ফল পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "biological",
+        "description_en": "Soil drench and spray with BAU-Biofungicide; keep fruit off soil; rotation with pepper, tomato, eggplant",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "BAU-Biofungicide",
+        "dose": "3%",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "CUC_FW": {
+    "disease_id": "CUC_FW",
+    "crop_en": "Cucurbits",
+    "crop_bn": "কুমড়া জাতীয় সবজি",
+    "disease_en": "Fusarium Wilt",
+    "disease_bn": "ফিউজারিয়াম ঢলে পড়া রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Resistant cultivars; hot water seed treatment 55 C for 15 min; BAU-Biofungicide seed treatment (3% seed weight) and soil drench; soil drench with carbendazim",
+        "description_bn": "",
+        "active_ingredient": "Carbendazim",
+        "product_name": "BAU-Biofungicide",
+        "dose": "carbendazim dose not specified",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": "dose_missing"
+      }
+    ]
+  },
+  "CUC_AB": {
+    "disease_id": "CUC_AB",
+    "crop_en": "Cucurbits",
+    "crop_bn": "কুমড়া জাতীয় সবজি",
+    "disease_en": "Alternaria Blight and Fruit Rot",
+    "disease_bn": "অল্টারনেরিয়া পাতা ঝলসানো ও ফল পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Disease-free seed, clean cultivation, rotation; spray Indofil M-45",
+        "description_bn": "",
+        "active_ingredient": "Mancozeb",
+        "product_name": "Indofil M-45",
+        "dose": "0.25%",
+        "timing": "every 10-15 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "MNG_PM": {
+    "disease_id": "MNG_PM",
+    "crop_en": "Mango",
+    "crop_bn": "আম",
+    "disease_en": "Powdery Mildew",
+    "disease_bn": "পাউডারি মিলডিউ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Thiovit; BAU-Biofungicide",
+        "description_bn": "",
+        "active_ingredient": "Sulphur",
+        "product_name": "Thiovit; BAU-Biofungicide",
+        "dose": "Thiovit 0.2%; BAU-Biofungicide 3%",
+        "timing": "Thiovit every 10-15 days; biofungicide every 12 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "MNG_ANTH": {
+    "disease_id": "MNG_ANTH",
+    "crop_en": "Mango",
+    "crop_bn": "আম",
+    "disease_en": "Anthracnose",
+    "disease_bn": "অ্যানথ্রাকনোজ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Pre-harvest sprays; last spray 15 days before harvest; bag fruits 15 days before harvest",
+        "description_bn": "",
+        "active_ingredient": "Hexaconazole; Carbendazim; Copper oxychloride (Cupravit)",
+        "product_name": "Cupravit; BAU-Biofungicide",
+        "dose": "Hexaconazole 0.01% or Carbendazim 0.1%; Cupravit 0.03%; BAU-Biofungicide 3%",
+        "timing": "every 15 days (Cupravit, hexaconazole, carbendazim); every 12 days (biofungicide)",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      },
+      {
+        "measure_type": "cultural",
+        "description_en": "Clean cultivation: collect and burn diseased leaves, twigs, fruit",
+        "description_bn": "",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "",
+        "timing": "",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "MNG_DIEBACK": {
+    "disease_id": "MNG_DIEBACK",
+    "crop_en": "Mango",
+    "crop_bn": "আম",
+    "disease_en": "Die-back",
+    "disease_bn": "ডগা মরা রোগ",
+    "pathogen": "",
+    "primary_source_id": "S1",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Prune diseased terminals with 15-20 cm healthy portion and paint cut end; spray Cupravit",
+        "description_bn": "",
+        "active_ingredient": "Copper oxychloride",
+        "product_name": "Cupravit",
+        "dose": "0.03%",
+        "timing": "every 15 days",
+        "source_id": "S1",
+        "source_name": "National Agricultural Technology Project-II Pest Management Plan Vol II, Ministry of Agriculture, Bangladesh (Nov 2014); Tables 5-7, Annex 1",
+        "source_url": "https://documents1.worldbank.org/curated/en/499291468219892929/pdf/E47060v20P1495000Revised02001102014.pdf",
+        "flags": ""
+      }
+    ]
+  },
+  "POT_BACTERIA": {
+    "disease_id": "POT_BACTERIA",
+    "crop_en": "Potato",
+    "crop_bn": "আলু",
+    "disease_en": "Bacterial wilt",
+    "disease_bn": "ব্যাকটেরিয়া জনিত ঢলে পড়া রোগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Apply stable bleaching powder at 20–25 kg/ha before the final land-preparation ploughing, as stated by source.",
+        "description_bn": "জমি তৈরীর শেষ চাষের আগে হেক্টর প্রতি ২০-২৫ কেজি হারে স্ট্যাবল ব্লিচিং পাউডার প্রয়োগ করা।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "20–25 kg/ha",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/52",
+        "flags": "Verify with a local extension officer; source protocol should not be generalized to other crops or products."
+      }
+    ]
+  },
+  "JUT_SEEDLING": {
+    "disease_id": "JUT_SEEDLING",
+    "crop_en": "Jute",
+    "crop_bn": "পাট",
+    "disease_en": "Seedling blight / damping-off (source label: seedling blight)",
+    "disease_bn": "চারা মড়ক",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Mancozeb 2 g/L water, or treat seed with Provax-200 at 4 g/kg seed, as stated by source.",
+        "description_bn": "ম্যানকোজেব @২ গ্রাম/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে। অথবা প্রোভেক্স-২০০ @৪ গ্রাম/কেজি বীজ শোধন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2 g/L spray; alternatively 4 g/kg seed treatment",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/10",
+        "flags": "The source page also contains other jute disease entries with missing dose values; omitted here rather than inferred."
+      }
+    ]
+  },
+  "JUT_LEAFMOSA": {
+    "disease_id": "JUT_LEAFMOSA",
+    "crop_en": "Jute",
+    "crop_bn": "পাট",
+    "disease_en": "Leaf mosaic",
+    "disease_bn": "পাতায় মোজাইক",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Malathion 2 mL/L water, as stated by source.",
+        "description_bn": "ম্যালাথিয়ন @২এমএল/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/10",
+        "flags": "Because mosaic is viral, confirm the actual vector/management rationale with plant pathology expertise; don't present insecticide as curing the virus."
+      }
+    ]
+  },
+  "LEN_WILT": {
+    "disease_id": "LEN_WILT",
+    "crop_en": "Lentil",
+    "crop_bn": "মসুর",
+    "disease_en": "Wilt",
+    "disease_bn": "ঢলে পড়া রোগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Carbendazim 1 g/L water, sprayed 2–3 times at 7–10 day intervals, as stated by source.",
+        "description_bn": "কার্বেনডাজিম ১ গ্রাম/লিটার পানিতে মিশিয়ে ৭-১০ দিন অন্তর অন্তর ২-৩ বার স্প্রে করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1 g/L; 2–3 sprays, 7–10 day interval",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/58",
+        "flags": "Verify current registration and crop-label instructions. Source gives trade names separately."
+      }
+    ]
+  },
+  "LEN_FOOTROOT": {
+    "disease_id": "LEN_FOOTROOT",
+    "crop_en": "Lentil",
+    "crop_bn": "মসুর",
+    "disease_en": "Foot/root rot",
+    "disease_bn": "গোড়া পচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Treat seed with Provax-200 WP at 2.5 g/kg seed, as stated by source.",
+        "description_bn": "প্রোভেক্স-২০০ ডব্লিউ পি ২.৫ গ্রাম/কেজি হারে বীজ শোধন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2.5 g/kg seed",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/58",
+        "flags": "Verify current registration and label."
+      }
+    ]
+  },
+  "LEN_RUST": {
+    "disease_id": "LEN_RUST",
+    "crop_en": "Lentil",
+    "crop_bn": "মসুর",
+    "disease_en": "Rust",
+    "disease_bn": "মরিচা রোগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Carbendazim or mancozeb 1 g/L water, as stated by source.",
+        "description_bn": "কার্বেনডাজিম/ম্যানকোজেব ১ গ্রাম/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1 g/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/58",
+        "flags": "Check formulation-specific label and current registration; source wording is retained."
+      }
+    ]
+  },
+  "LEN_STEMPHYL": {
+    "disease_id": "LEN_STEMPHYL",
+    "crop_en": "Lentil",
+    "crop_bn": "মসুর",
+    "disease_en": "Stemphylium blight",
+    "disease_bn": "স্টেমফাইলিয়াম ব্লাইট",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Iprodione or tebuconazole, or a mixture of the two, 2 g/L water at 7-day intervals for 3–4 applications, as stated by source.",
+        "description_bn": "আইপ্রোডিওন/টেবিউকোনাজল অথবা দুটি ঔষধের মিশ্রণ ২ গ্রাম/লিটার পানিতে মিশিয়ে ৭ দিন অন্তর তিন-চার বার প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2 g/L; 3–4 applications, 7-day interval",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/58",
+        "flags": "Source does not specify the formulation or mixture ratio; do not infer either. Verify current crop registration and label."
+      }
+    ]
+  },
+  "MAI_SEEDANDS": {
+    "disease_id": "MAI_SEEDANDS",
+    "crop_en": "Maize",
+    "crop_bn": "ভুট্টা",
+    "disease_en": "Seed and seedling rot",
+    "disease_bn": "বীজ এবং চারা পচা",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Treat seed with thiram or Vitavax-200 at 2.5–3 g/kg seed, as stated by source.",
+        "description_bn": "২.৫-৩ গ্রাম/কেজি হারে থাইরাম/ভিটাভেক্স-২০০ নামক ছত্রাক দিয়ে বীজ শোধন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2.5–3 g/kg seed",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/8",
+        "flags": "Verify current formulation, registration, and label."
+      }
+    ]
+  },
+  "MAI_STALKROT": {
+    "disease_id": "MAI_STALKROT",
+    "crop_en": "Maize",
+    "crop_bn": "ভুট্টা",
+    "disease_en": "Stalk rot",
+    "disease_bn": "কান্ড পচা",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Propiconazole 1.5 mL/L or carbendazim 1.5 mL/L water, as stated by source.",
+        "description_bn": "প্রোপিকোনাজল ১.৫ মিলি./লিটার অথবা কার্বেনডাজিম ১.৫ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1.5 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/8",
+        "flags": "The source states millilitres for named actives/formulations; verify exact product concentration and crop label."
+      }
+    ]
+  },
+  "MAI_LEAFBLIG": {
+    "disease_id": "MAI_LEAFBLIG",
+    "crop_en": "Maize",
+    "crop_bn": "ভুট্টা",
+    "disease_en": "Leaf blight",
+    "disease_bn": "পাতা ঝলসানো",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Carbendazim 1 mL/L or propiconazole 2 mL/L water, as stated by source.",
+        "description_bn": "কার্বেন্ডাজিম ১মিলি./লিটার অথবা প্রোপিকোনাজল ২ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1 mL/L or 2 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/8",
+        "flags": "Verify product formulation and current crop label."
+      }
+    ]
+  },
+  "MUS_STEMROT": {
+    "disease_id": "MUS_STEMROT",
+    "crop_en": "Mustard",
+    "crop_bn": "সরিষা",
+    "disease_en": "Stem rot",
+    "disease_bn": "কান্ড পচাঁ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Treat seed with Provax-200 at 2.5 g/kg seed or apply iprodione at 2 g/L water, as stated by source.",
+        "description_bn": "প্রোভেক্স-২০০ @ ২.৫ গ্রাম/কেজি বীজ শোধন করতে হবে অথবা আইপ্রোডিওন @২ গ্রাম/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2.5 g/kg seed or 2 g/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/44",
+        "flags": "Verify current crop-specific registration and product label."
+      }
+    ]
+  },
+  "MUS_ALTERNAR": {
+    "disease_id": "MUS_ALTERNAR",
+    "crop_en": "Mustard",
+    "crop_bn": "সরিষা",
+    "disease_en": "Alternaria leaf blight",
+    "disease_bn": "অল্টারনারিয়া লিফ ব্লাইট",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Treat seed with Provax-200 at 2–3 g/kg seed or apply iprodione at 2 g/L water, as stated by source.",
+        "description_bn": "প্রোভেক্স-২০০ @২-৩ গ্রাম/কেজি বীজ শোধন করতে হবে অথবা আইপ্রোডিওন @২ গ্রাম/লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2–3 g/kg seed or 2 g/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/44",
+        "flags": "Verify current crop-specific registration and product label."
+      }
+    ]
+  },
+  "WHE_FOOTROT": {
+    "disease_id": "WHE_FOOTROT",
+    "crop_en": "Wheat",
+    "crop_bn": "গম",
+    "disease_en": "Foot rot",
+    "disease_bn": "গোড়া পচা",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Propiconazole 1.5 mL/L water or carbendazim 1.5 mL/L water, as stated by source.",
+        "description_bn": "প্রোপিকোনাজল ১.৫ মিলি./লিটার পানিতে অথবা কার্বেনডাজিম ১.৫ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1.5 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/9",
+        "flags": "Verify formulations and current crop registration."
+      }
+    ]
+  },
+  "WHE_LEAFRUST": {
+    "disease_id": "WHE_LEAFRUST",
+    "crop_en": "Wheat",
+    "crop_bn": "গম",
+    "disease_en": "Leaf rust",
+    "disease_bn": "পাতার মরিচা দাগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Hexaconazole 1 mL/L water or tebuconazole/carbendazim 1 mL/L water, as stated by source.",
+        "description_bn": "হেক্সাকোনাজল ১ মিলি./লিটার পানিতে অথবা টেবিউকোনাজল/কার্বেন্ডাজিম ১ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/9",
+        "flags": "Source provides multiple actives; verify formulation, registration, and label."
+      }
+    ]
+  },
+  "WHE_LEAFBLIG": {
+    "disease_id": "WHE_LEAFBLIG",
+    "crop_en": "Wheat",
+    "crop_bn": "গম",
+    "disease_en": "Leaf blight",
+    "disease_bn": "পাতা ঝলসানো",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "seed_treatment",
+        "description_en": "Treat seed with carboxin at 2.5–3 g/kg, as stated by source.",
+        "description_bn": "২.৫-৩ গ্রাম/কেজি হারে কার্বোক্সিন দিয়ে বীজ শোধন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2.5–3 g/kg seed",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/9",
+        "flags": "Verify current product registration and label."
+      }
+    ]
+  },
+  "WHE_BROWNSPO": {
+    "disease_id": "WHE_BROWNSPO",
+    "crop_en": "Wheat",
+    "crop_bn": "গম",
+    "disease_en": "Brown spot",
+    "disease_bn": "বাদামী দাগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Carbendazim 1.5 mL/L or propiconazole 1.5 mL/L water, as stated by source.",
+        "description_bn": "কার্বেনডাজিম ১.৫ মিলি./লিটার অথবা প্রোপিকোনাজল ১.৫ মিলি./লিটার পানিতে মিশিয়ে প্রয়োগ করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1.5 mL/L",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "DAE / BAMIS",
+        "source_url": "https://www.bamis.gov.bd/diseases/1/all/9",
+        "flags": "Verify formulation, current crop registration, and label."
+      }
+    ]
+  },
+  "CHI_WILT": {
+    "disease_id": "CHI_WILT",
+    "crop_en": "Chilli",
+    "crop_bn": "মরিচ",
+    "disease_en": "Wilt",
+    "disease_bn": "ঢলে পড়া রোগ",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "cultural",
+        "description_en": "Destroy crop residues; avoid excess irrigation; at first infection, source advises Autostin 1 g/L every 10 days for 3–4 applications.",
+        "description_bn": "ফসলের পরিত্যক্ত অংশ পুড়িয়ে ফেলতে হবে; জমিতে অতিরিক্ত সেচ দেয়া যাবে না; গাছ আক্রান্ত হওয়া মাত্রই অটোস্টিন প্রতি লিটার পানিতে ১ গ্রাম হারে মিশিয়ে ১০ দিন পর পর ৩-৪ বার স্প্রে করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "1 g/L; 3–4 sprays, 10-day interval",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "AIS / Agriculture Information Service",
+        "source_url": "https://ais.gov.bd/pages/ekrishi/%E0%A6%AE%E0%A6%B0%E0%A6%BF%E0%A6%9A-s40d28-69a2d02de01e4da62442f183",
+        "flags": "Article describes multiple possible pathogens (fungal and bacterial); fungicide cannot be assumed effective for bacterial wilt. Use diagnosis before treatment and verify label."
+      }
+    ]
+  },
+  "CHI_SEEDANDS": {
+    "disease_id": "CHI_SEEDANDS",
+    "crop_en": "Chilli",
+    "crop_bn": "মরিচ",
+    "disease_en": "Seed and seedling rot",
+    "disease_bn": "বীজ ও চারা পচা",
+    "pathogen": "",
+    "primary_source_id": "BAMIS",
+    "measures": [
+      {
+        "measure_type": "chemical",
+        "description_en": "Treat seed with Provax or Ridomil Gold at 2.5 g/kg seed, or hot-water treat at 52°C for 30 minutes, as stated by source.",
+        "description_bn": "মরিচ বীজ প্রোভেক্স অথবা রিডোমিল গোল্ড @ ২.৫ গ্রাম/কেজি বীজ দ্বারা শোধন করে বপন করতে হবে অথবা মরিচ বীজ ৫২ ডিগ্রি সেন্টিগ্রেড তাপমাত্রায় গরম পানিতে ৩০ মিনিট রেখে শোধন করে নিয়ে বপন করতে হবে।",
+        "active_ingredient": "",
+        "product_name": "",
+        "dose": "2.5 g/kg seed; alternatively 52°C for 30 minutes",
+        "timing": "",
+        "source_id": "BAMIS",
+        "source_name": "AIS / Agriculture Information Service",
+        "source_url": "https://ais.gov.bd/pages/krishi-kotha/%E0%A6%AC%E0%A6%BE%E0%A6%B0%E0%A6%BF-%E0%A6%AE%E0%Aরিচ-%E0%A7%A8-%E0%A6%8F%E0%A6%B0-%E0%A6%86%E0%A6%A7%E0%A7%81%E0%A6%A8%E0%A6%BF%E0%A6%95-%E0%A6%89%E0%A7%8E%E0%A6%AA%E0%A6%BE%E0%A6%A6%E0%A6%A8-%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A6%AF%E0%A7%81%E0%A6%95%E0%A7%8D%E0%A6%A4%E0%A6%BF-6197be-6922d947dbfbab28ce04aaf5",
+        "flags": "The AIS article is specifically on BARI Chilli-2 production technology. Verify product formulation and current registration."
+      }
+    ]
+  }
+}
