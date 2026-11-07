@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { normalizeMobile } from '../lib/phone';
+import { passwordProblem } from './password';
 
 const mobile = z
   .string()
@@ -22,29 +23,6 @@ const password = z
   .min(8, 'Password must be at least 8 characters')
   .max(128, 'Password must be at most 128 characters');
 
-const commonPasswords = new Set([
-  'password',
-  'password1',
-  'password123',
-  'passw0rd',
-  '12345678',
-  '123456789',
-  '1234567890',
-  'qwerty123',
-  'letmein',
-  'iloveyou',
-  'welcome1',
-  'admin123',
-  'abc12345',
-  '11111111',
-  '00000000',
-  'bangladesh',
-  'agrisense',
-  'farmer123',
-  'vendor123',
-  'expert123',
-]);
-
 export const registerSchema = z
   .object({
     name: z.string().trim().min(2, 'Name must be at least 2 characters').max(120),
@@ -61,40 +39,46 @@ export const registerSchema = z
     certification: z.string().trim().max(160).optional(),
   })
   .superRefine((data, ctx) => {
-    const lowered = data.password.toLowerCase();
-    const national = data.mobile.slice(-10);
-
-    if (lowered.includes(national) || lowered.includes(`0${national}`)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['password'],
-        message: 'Password must not contain your mobile number',
-      });
+    const passwordIssue = passwordProblem(data.password, {
+      name: data.name,
+      mobile: data.mobile,
+    });
+    if (passwordIssue) {
+      ctx.addIssue({ code: 'custom', path: ['password'], message: passwordIssue });
     }
 
-    const name = data.name.trim().toLowerCase();
-    if (name.length >= 3 && lowered.includes(name)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['password'],
-        message: 'Password must not contain your name',
-      });
+    if (data.role === 'vendor') {
+      if (!data.shop_name || data.shop_name.length < 2) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['shop_name'],
+          message: 'Shop name is required',
+        });
+      }
+      if (!data.license_no || data.license_no.length < 2) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['license_no'],
+          message: 'Trade licence number is required',
+        });
+      }
     }
 
-    if (commonPasswords.has(lowered)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['password'],
-        message: 'That password is too common. Choose something unique',
-      });
-    }
-
-    if (/^\d+$/.test(data.password)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['password'],
-        message: 'Password must not be only numbers. Mix letters and numbers',
-      });
+    if (data.role === 'expert') {
+      if (!data.specialization || data.specialization.length < 2) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['specialization'],
+          message: 'Specialization is required',
+        });
+      }
+      if (!data.certification || data.certification.length < 2) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['certification'],
+          message: 'Certification is required',
+        });
+      }
     }
   });
 
@@ -123,12 +107,9 @@ export const changePasswordSchema = z
       });
     }
 
-    if (/^\d+$/.test(data.newPassword)) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['newPassword'],
-        message: 'Password must not be only numbers. Mix letters and numbers',
-      });
+    const passwordIssue = passwordProblem(data.newPassword);
+    if (passwordIssue) {
+      ctx.addIssue({ code: 'custom', path: ['newPassword'], message: passwordIssue });
     }
   });
 
@@ -137,6 +118,11 @@ export const forgotPasswordSchema = z.object({ mobile });
 export const resetPasswordSchema = z.object({
   token: z.string().min(32, 'Reset code is required').max(200),
   newPassword: password,
+}).superRefine((data, ctx) => {
+  const passwordIssue = passwordProblem(data.newPassword);
+  if (passwordIssue) {
+    ctx.addIssue({ code: 'custom', path: ['newPassword'], message: passwordIssue });
+  }
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
