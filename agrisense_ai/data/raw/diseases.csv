@@ -1,0 +1,31 @@
+﻿disease_id,crop_en,crop_bn,disease_en,disease_bn,bn_name_status,pathogen,pathogen_source_id,primary_source_id
+RICE_BLAST,Rice,ধান,Blast,ব্লাস্ট,user_supplied,Pyricularia oryzae (Magnaporthe oryzae),S9,S1
+RICE_BS,Rice,ধান,Brown Spot,বাদামী দাগ,user_supplied,Cochliobolus miyabeanus,S9,S1
+RICE_BLB,Rice,ধান,Bacterial Leaf Blight,ব্যাকটেরিয়াল পাতা পোড়া,user_supplied,Xanthomonas oryzae pv. oryzae,S9,S1
+RICE_SHB,Rice,ধান,Sheath Blight,শীথ ব্লাইট,unverified,Rhizoctonia solani,S9,S1
+RICE_TUNGRO,Rice,ধান,Tungro,টুংরো,unverified,,,S1
+RICE_LSCALD,Rice,ধান,Leaf Scald,,unverified,Microdochium oryzae,S9,S1
+RICE_SHROT,Rice,ধান,Sheath Rot,,unverified,,,S1
+RICE_UFRA,Rice,ধান,Ufra,,unverified,,,S1
+RICE_FOOTROT,Rice,ধান,Foot Rot and Bakanae,,unverified,,,S1
+RICE_BLS,Rice,ধান,Bacterial Leaf Streak,,unverified,,,S1
+RICE_SEEDBLIGHT,Rice,ধান,Seedling Blight,,unverified,,,S1
+RICE_DAMP,Rice,ধান,Seedling Damping Off,,unverified,,,S1
+WHEAT_BLAST,Wheat,গম,Wheat Blast,গমের ব্লাস্ট,unverified,Magnaporthe oryzae pathotype Triticum,S3,S3
+POT_LB,Potato,আলু,Late Blight,নাবি ধসা,user_supplied,Phytophthora infestans,S6,S6
+POT_EB,Potato,আলু,Early Blight,আগাম ধসা,user_supplied,Alternaria solani,S8,S8
+TOM_EB,Tomato,টমেটো,Early Blight (Alternaria leaf blight),আগাম ধসা,user_supplied,,,S1
+TOM_LB,Tomato,টমেটো,Late Blight,নাবি ধসা,user_supplied,,,S1
+TOM_BW,Tomato,টমেটো,Bacterial Wilt,ব্যাকটেরিয়াজনিত ঢলে পড়া,unverified,,,S1
+TOM_LCV,Tomato,টমেটো,"Leaf Curl (virus, whitefly-transmitted)",পাতা কুঁকড়ানো,user_supplied,,,S1
+BRI_FRUITROT,Brinjal,বেগুন,Fruit and Stem Rot / Fruit Blight,,unverified,,,S1
+BRI_BW,Brinjal,বেগুন,Bacterial Wilt,ব্যাকটেরিয়াজনিত ঢলে পড়া,unverified,,,S1
+BRI_RKN,Brinjal,বেগুন,Root Knot Nematode,,unverified,,,S1
+CUC_PM,Cucurbits,কুমড়া জাতীয় সবজি,Powdery Mildew,পাউডারি মিলডিউ,unverified,,,S1
+CUC_MV,Cucurbits,কুমড়া জাতীয় সবজি,Mosaic Virus,মোজাইক ভাইরাস,unverified,,,S1
+CUC_FR,Cucurbits,কুমড়া জাতীয় সবজি,Fruit Rot,,unverified,,,S1
+CUC_FW,Cucurbits,কুমড়া জাতীয় সবজি,Fusarium Wilt,,unverified,,,S1
+CUC_AB,Cucurbits,কুমড়া জাতীয় সবজি,Alternaria Blight and Fruit Rot,,unverified,,,S1
+MNG_PM,Mango,আম,Powdery Mildew,পাউডারি মিলডিউ,unverified,,,S1
+MNG_ANTH,Mango,আম,Anthracnose,অ্যানথ্রাকনোজ,unverified,,,S1
+MNG_DIEBACK,Mango,আম,Die-back,,unverified,,,S1

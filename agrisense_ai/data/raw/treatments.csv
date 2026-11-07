@@ -1,0 +1,49 @@
+﻿disease_id,measure_type,measure_description,active_ingredient,product_name,dose,timing_interval,source_id,location_in_source,flags
+RICE_BLAST,cultural,"Use tolerant varieties BR-12, 15, 16, 24, BRRI dhan33; use seed from healthy plants; balanced fertilizer; organic manure; keep standing water",,,,,S1,Table 5 p.30,
+RICE_BLAST,chemical,Apply an approved fungicide at initial infection only if needed (source names no product or dose),,,not specified in source,initial stage of infection,S1,Table 5 p.30,dose_missing
+RICE_BS,cultural,Resistant variety; healthy seed; hot water seed soak 53-54 C or cold water soak; keep seedbed moist; organic and balanced fertilizer,,,53-54 C hot water,,S1,Table 5 p.30,
+RICE_BS,chemical,Seed treatment with fungicide,Thiram; Captan; Carbendazim (Bavistin),Bavistin,not specified in source,seed treatment,S1,Table 5 p.30,dose_missing
+RICE_BLB,cultural,"Tolerant variety; balanced fertilizer, urea in three instalments; withhold irrigation 7-8 days to dry soil; apply potash",Potash fertilizer,,5 kg potash per bigha (0.33 acre),,S1,Table 5 p.30,bigha_unit_as_stated_in_source
+RICE_SHB,cultural,"Resistant varieties BR-22, BR-23, BRRI dhan34, BRRI dhan41; spacing 25x20 or 25x15 cm, 3 seedlings per hill; remove floating debris; burn dead plants; crop rotation; correct urea dose",,,,,S1,Table 5 p.30,
+RICE_SHB,chemical,Use an approved fungicide (no product or dose given),,,not specified in source,,S1,Table 5 p.30,dose_missing
+RICE_TUNGRO,cultural,Tolerant varieties; burn or bury Arali grass; light trap and hand net for vector,,,,,S1,Table 5 p.30,
+RICE_LSCALD,cultural,Tolerant variety; no excess urea; keep land dry for some days when disease appears; seed from healthy plants,,,,,S1,Table 5 p.30,
+RICE_LSCALD,chemical,"If needed, fungicide containing 80% sulphur",Sulphur 80%,,not specified in source,,S1,Table 5 p.30,dose_missing
+RICE_SHROT,cultural,"Burn affected straw; healthy treated seed; tolerant varieties BR-2,3,5,10,16,25, BRRI dhan26,32,33; balanced fertilizer; keep land dry when disease appears",,,,,S1,Table 5 p.31,
+RICE_SHROT,chemical,Approved fungicide if needed (no product or dose given),,,not specified in source,,S1,Table 5 p.31,dose_missing
+RICE_UFRA,cultural,Tolerant varieties Raida and Bajail; burn leftover straw; control grass weeds; cut top of leaves at initial attack,,,,,S1,Table 5 p.31,
+RICE_UFRA,chemical,Source recommends Furadan 5G against the nematode,Carbofuran,Furadan 5G,2.5 kg per bigha early crop stage; seedling dip 15 g per litre water overnight,early crop stage,S1,Table 5 p.31,REGULATORY_CHECK: 'Furadan 3G' appears in Annex 1 banned-pesticide list of the same document; do not surface to farmers without confirming current DAE status
+RICE_FOOTROT,cultural,Resistant variety; disease-free seed; do not reuse seedbed land; seed soak in fungicide water; soft moist seedbed; dry land after identification; discard infected seedlings; burn infected plants; rotation,,,,,S1,Table 5 p.31,
+RICE_BLS,cultural,Resistant variety; control insects; drain field; balanced fertilizer with less urea,,,,,S1,Table 5 p.31,
+RICE_SEEDBLIGHT,cultural,Treat seed with Vitavax or Thiram before sowing; mix rice bran into seedbed soil; avoid sowing in extreme cold; keep seedbed under standing water some days,Carboxin (Vitavax); Thiram,Vitabrex/Vitavax; Thirum,not specified in source,before sowing,S1,Table 5 p.31,dose_missing; source spelling 'Vitabrex' and 'Thirum' kept as written
+RICE_DAMP,chemical,Seed treatment before sowing,Captan; Copper oxychloride,,4 g Captan per kg seed OR 2 g copper oxychloride per kg seed,before sowing,S1,Table 5 p.31,
+RICE_DAMP,cultural,Do not keep seedbed under water during germination; avoid sowing in heavy cold; cover seedbed with polythene in cold spells,,,,,S1,Table 5 p.31,
+WHEAT_BLAST,cultural,Grow blast-resistant variety BARI Gom 33 as first line of defence (released 2017),,BARI Gom 33,,,S5,abstract,
+WHEAT_BLAST,chemical,Fungicide sprays at heading; best field results with three products,Tebuconazole 50% + Trifloxystrobin 25% (Nativo 75WG); Azoxystrobin 20% + Difenoconazole 12.5% (Amistar Top 325SC); Pyraclostrobin 5% + Metiram 55% (Cabrio Top 60WG),Nativo 75WG; Amistar Top 325SC; Cabrio Top 60WG,dose not given in abstract,twice at 13-15 day interval starting at heading stage,S2,abstract,dose_missing
+WHEAT_BLAST,chemical,"Mixture of tebuconazole + tricyclazole + pyraclostrobin gave 97% blast reduction, better than single compounds; sprays at booting, pre-heading, heading",Tebuconazole; Tricyclazole; Pyraclostrobin,Nativo + Trooper 75WP (tricyclazole) cocktail; Filia (Tricyclazole 40% + Propiconazole 12.5%) + Seltima (Pyraclostrobin 10%),Table text (garbled in extraction): Nativo 6 g per 10 L; Filia 20 ml per 10 L - verify in PDF,three sprays from booting at 7 day interval (net house),S3,abstract + Table 1,verify_dose_in_original_pdf
+WHEAT_BLAST,chemical,Pot study: Nativo and Trooper best; two sprays at pre-heading,Tebuconazole + Trifloxystrobin; Tricyclazole,Nativo 75WG; Trooper 75WP,not in abstract,"twice at 10 day interval, pre-heading",S4,abstract,pot_study_only; dose_missing
+POT_LB,chemical,Mancozeb protectant and Ridomil MZ 63.5 (metalaxyl + mancozeb) are the most commonly used fungicides; trial of 13 fungicides conducted,Mancozeb; Metalaxyl + Mancozeb,Ridomil MZ 63.5,dose not in retrieved text,,S6,abstract + intro,dose_missing
+POT_LB,chemical,"Metalaxyl resistance reported in Bangladeshi P. infestans; rely on rotation of fungicide groups, not higher dose",Metalaxyl (resistance),,,,S7,intro,resistance_warning
+POT_LB,chemical,Best performer in a Bangladesh-based test when applied preventively (book abstract by BAU-linked author),Cymoxanil 8% + Mancozeb 64%,Sunoxanil 72WP,dose not in retrieved text,prophylactic,S10,book blurb,secondary_source; dose_missing
+POT_EB,chemical,Fungicide trial: Bicozeb 80WP (mancozeb) significant and cost-effective; Rovral 50WP (iprodione) also good,Mancozeb; Iprodione,Bicozeb 80WP; Rovral 50WP,dose not in retrieved text,,S8,abstract,dose_missing
+TOM_EB,biological,Seed treatment with tricho-solution or garlic tablet; field sanitation; spray tricho-solution 3% weekly,Trichoderma,tricho-solution,3%,every 7 days,S1,Table 6 p.32,
+TOM_EB,chemical,Spray Dithane M-45,Mancozeb,Dithane M-45,not specified in source,every 7 days,S1,Table 6 p.32,dose_missing; REGULATORY_CHECK: some mancozeb brand registrations (e.g. Manzate 200) appear in Annex 1
+TOM_LB,chemical,Disease-free seed; spray BAU-Biofungicide 3%; spray Mancozeb,Mancozeb,BAU-Biofungicide,3% (biofungicide); mancozeb dose not specified,every 7 days,S1,Table 6 p.32,dose_missing
+TOM_BW,cultural,Disease-free seed and seedbed; if field contaminated rotate with cereals at least 3 years,,,,,S1,Table 6 p.33,
+TOM_LCV,cultural,Seedlings under net; barrier crops; yellow sticky traps; uproot infected plants and weeds,,,,,S1,Table 6 p.33,
+TOM_LCV,chemical,Spray Dimethoate against whitefly vector,Dimethoate,,not specified in source,every 10 days,S1,Table 6 p.33,dose_missing; check_current_registration
+BRI_FRUITROT,cultural,"Pathogen-free seed; 3-4 year rotation; destroy infected material; control solanaceous weeds; resistant varieties Jessore local, Kata begun, Isharwardi-1; mulch and furrow irrigation",,,,,S1,Table 6 p.32,
+BRI_FRUITROT,chemical,BAU-Biofungicide spray; Bavistin as protectant,Carbendazim,Bavistin; BAU-Biofungicide,Bavistin 2 g per litre; BAU-Biofungicide 3%,,S1,Table 6 p.32,
+BRI_BW,chemical,"Dip seed before sowing; avoid rotation with okra, tomato, potato; remove affected plants",Streptomycin sulphate/tetracycline (Streptocycline),Streptocycline,"1 g per 40 litres water, seed dip 30 minutes",before sowing,S1,Table 6 p.32,
+BRI_RKN,cultural,Remove weed hosts; soil solarisation; fallow with deep ploughing; neem cake 250 kg/ha,Neem cake,,250 kg per ha,,S1,Table 6 p.32,
+BRI_RKN,chemical,Carbofuran 3G granules,Carbofuran,,1 kg a.i. per ha,,S1,Table 6 p.32,REGULATORY_CHECK: 'Furadan 3G' appears in Annex 1 banned list of the same document
+CUC_PM,chemical,Wettable sulphur or dusting sulphur; Thiovit; BAU-Biofungicide,Sulphur,Thiovit; BAU-Biofungicide,Wettable sulphur 0.2%; Thiovit 2 g per litre; BAU-Biofungicide 3%,Thiovit weekly; sulphur once or twice per season,S1,Table 6 p.34,
+CUC_PM,cultural,Avoid crowded planting; field sanitation,,,,,S1,Table 6 p.34,
+CUC_MV,chemical,Spray insecticide to suppress insect vectors,Oxydemeton-methyl (Metasystox),Metasystox,0.1%,,S1,Table 6 p.34,check_current_registration
+CUC_FR,biological,"Soil drench and spray with BAU-Biofungicide; keep fruit off soil; rotation with pepper, tomato, eggplant",,BAU-Biofungicide,3%,,S1,Table 6 p.34,
+CUC_FW,cultural,Resistant cultivars; hot water seed treatment 55 C for 15 min; BAU-Biofungicide seed treatment (3% seed weight) and soil drench; soil drench with carbendazim,Carbendazim,BAU-Biofungicide,carbendazim dose not specified,,S1,Table 6 p.34,dose_missing
+CUC_AB,chemical,"Disease-free seed, clean cultivation, rotation; spray Indofil M-45",Mancozeb,Indofil M-45,0.25%,every 10-15 days,S1,Table 6 p.34,
+MNG_PM,chemical,Thiovit; BAU-Biofungicide,Sulphur,Thiovit; BAU-Biofungicide,Thiovit 0.2%; BAU-Biofungicide 3%,Thiovit every 10-15 days; biofungicide every 12 days,S1,Table 7 p.35,
+MNG_ANTH,chemical,Pre-harvest sprays; last spray 15 days before harvest; bag fruits 15 days before harvest,Hexaconazole; Carbendazim; Copper oxychloride (Cupravit),Cupravit; BAU-Biofungicide,Hexaconazole 0.01% or Carbendazim 0.1%; Cupravit 0.03%; BAU-Biofungicide 3%,"every 15 days (Cupravit, hexaconazole, carbendazim); every 12 days (biofungicide)",S1,Table 7 p.35,
+MNG_ANTH,cultural,"Clean cultivation: collect and burn diseased leaves, twigs, fruit",,,,,S1,Table 7 p.35,
+MNG_DIEBACK,chemical,Prune diseased terminals with 15-20 cm healthy portion and paint cut end; spray Cupravit,Copper oxychloride,Cupravit,0.03%,every 15 days,S1,Table 7 p.35,
