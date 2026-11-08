@@ -23,15 +23,29 @@ async function main(): Promise<void> {
   if (!mobileNumber) throw new Error('ADMIN_MOBILE is not a valid Bangladeshi mobile number');
   if (password.length < 12) throw new Error('ADMIN_PASSWORD must be at least 12 characters');
 
-  const passwordHash = await hashPassword(password);
-
-  await prisma.user.upsert({
+  const existing = await prisma.user.findUnique({
     where: { mobileNumber },
-    update: { name, passwordHash, role: 'ADMIN', status: 'ACTIVE' },
-    create: { name, mobileNumber, passwordHash, role: 'ADMIN', status: 'ACTIVE' },
+    select: { role: true, status: true },
   });
 
-  console.log(`Admin account ready: ${mobileNumber}`);
+  if (existing) {
+    // Provisioning must never change, escalate or unlock an account that already
+    // exists. An earlier version rewrote the password of a working administrator
+    // here, and its role update would also have promoted any account whose
+    // number appeared in ADMIN_MOBILE. A re-run is now a no-op.
+    console.log(
+      `${mobileNumber} already exists (${existing.role}, ${existing.status}). Nothing was changed — this command never edits an existing account.`,
+    );
+    return;
+  }
+
+  const passwordHash = await hashPassword(password);
+
+  await prisma.user.create({
+    data: { name, mobileNumber, passwordHash, role: 'ADMIN', status: 'ACTIVE' },
+  });
+
+  console.log(`Admin account created: ${mobileNumber}`);
 }
 
 main()
