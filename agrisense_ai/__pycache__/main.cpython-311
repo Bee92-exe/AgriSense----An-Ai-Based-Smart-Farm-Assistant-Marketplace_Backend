@@ -1,30 +1,0 @@
-§
-    #RÐjU  ã                    óz  — d dl mZmZmZ d dlmZ d dlm Z  d dlZ edd¬ ¦  «        Z	e	 
-                    edgd	dgdg¬
-¦  «          G d
-„ de ¦  «        Z
-e	                     d
-¦  «        d„ ¦   «         Z
-e	                     de
-¬¦  «         ed¦  «        fdefd„¦   «         Zedk    r ej        dddd	¬¦  «         dS dS )é    )Ú FastAPIÚFileÚ
-UploadFile)ÚCORSMiddleware)Ú	BaseModelNzAgriSense AI APIz Crop Disease Detection ML Engine)ÚtitleÚ
-descriptionÚ*T)Ú
-allow_originsÚallow_credentialsÚ
-allow_methodsÚ
-allow_headersc                   óD   — e Zd ZU eed<   eed<   ee         ed<   eed<   dS )ÚDiagnosisResponseÚdisease_nameÚ
-confidenceÚtreatment_stepsÚseverityN) Ú__name__Ú
-__module__Ú__qualname__ÚstrÚ__annotations__ÚfloatÚlist© ó    ú>C:\Users\emon\Downloads\AgriSense\Backend\agrisense_ai\main.pyr   r      sA   € € € € € € ØÐÐÑØÐÐÑØ˜#”YÐÐÑØ€M€MM€M€Mr   r   ú/c                  ó   — dddœS )NÚonlinezAgriSense AI Engine active)ÚstatusÚ servicer   r   r   r   Úhealth_checkr$      s   € àÐ+GÐ
-HÐ
-HÐHr   z/api/v1/diagnose)Úresponse_model.Úfilec               ƒ   ód   K  — |                       ¦   «         ƒ d{V —†}t          dddg d¢¬¦  «        S ) zŒ
-    Receives a crop image file, processes it through the PyTorch model, 
-    and returns the detected disease with confidence scoring.
-    Nu4   à¦ªà¦¾à¦¤à¦¾ à¦ªà§‹à¦¡à¦¼à¦¾ à¦°à§‹à¦— (Leaf Blight)g      W@ÚModerate)z/Remove and destroy infected leaves immediately.z.Apply Copper Oxychloride fungicide (2g/Liter).z+Avoid overhead watering to keep leaves dry.)r   r   r   r   )Úreadr   )r&   Úcontentss     r   Ú
-diagnose_cropr+      sX   è è € ð —Y’Y‘[”[Ð Ð Ð Ð Ð Ð €Hõ
- ØKØØð
-ð 
-ð 
-ð		ñ 	ô 	ð 	r   Ú__main__zmain:appz 0.0.0.0i@  )ÚhostÚportÚreload)Ú fastapir   r   r   Úfastapi.middleware.corsr   Úpydanticr    Ú uvicornÚappÚadd_middlewarer   Úgetr$   Úpostr+   r   Úrunr   r   r   ú<module>r9      sm  ðØ -Ð -Ð -Ð -Ð -Ð -Ð -Ð -Ð -Ð -Ø 2Ð 2Ð 2Ð 2Ð 2Ð 2Ø Ð Ð Ð Ð Ð Ø €€€à
-€gÐ&Ð4VÐWÑWÔW€ð × Ò ØØ%ØØ%Ø%ð
- ñ ô ð ðð ð ð ð ˜	ñ ô ð ð ‡‚ˆ„ðIð Iñ „ðIð ‡‚Ð
-Ð->€Ñ?Ô?Ø+/¨4°©9¬9ð ð ˜jð ð ð ñ @Ô?ðð, ˆzÒÐØ€G„K
- °¸dÐCÑCÔCÐCÐCÐCð Ðr   
