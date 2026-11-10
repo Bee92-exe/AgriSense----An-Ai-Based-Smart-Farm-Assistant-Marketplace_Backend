@@ -10,3 +10,6 @@ prisma/dev.db-journal
 __pycache__/
 *.pyc
 .venv/
+
+# Runtime uploads (diagnosis images)
+uploads/
