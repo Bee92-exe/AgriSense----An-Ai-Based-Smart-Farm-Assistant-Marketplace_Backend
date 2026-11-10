@@ -1,5 +1,12 @@
-node_modules
-# Keep environment variables out of version control
+node_modules/
 .env
-
+.env.*
+dist/
+logs/
+*.log
 /generated/prisma
+prisma/dev.db
+prisma/dev.db-journal
+__pycache__/
+*.pyc
+.venv/

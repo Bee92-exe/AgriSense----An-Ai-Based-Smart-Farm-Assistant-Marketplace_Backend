@@ -243,46 +243,23 @@ export const changePassword = async (req: AuthRequest, res: Response): Promise<v
 };
 
 /**
- * Dev-only delivery: the reset token is printed to the server log instead of
- * being sent by SMS. Refused outright in production, so the placeholder can
- * never silently ship.
+ * Password reset by SMS or email is not implemented, and no other channel can
+ * deliver a one-time code.
+ *
+ * The previous implementation wrote the raw token to the server log, which made
+ * every account resettable by anyone who could read that log — including any
+ * operator, and any log-shipping pipeline. That is an account-takeover path, so
+ * this now fails closed in every environment instead of pretending to send a
+ * code. Recovery is an administrator-initiated reset from the console.
  */
-export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
-  if (env.NODE_ENV === 'production') {
-    throw new AppError(503, 'reset_unavailable', 'Password reset is not available yet');
-  }
-
-  const { mobile } = req.body as ForgotPasswordInput;
-  const user = await prisma.user.findUnique({
-    where: { mobileNumber: mobile },
-    select: { id: true },
-  });
-
-  if (user) {
-    await prisma.passwordResetToken.deleteMany({
-      where: {
-        userId: user.id,
-        OR: [{ usedAt: { not: null } }, { expiresAt: { lt: new Date() } }],
-      },
-    });
-
-    const token = crypto.randomBytes(32).toString('base64url');
-    await prisma.passwordResetToken.create({
-      data: {
-        tokenHash: hashToken(token),
-        userId: user.id,
-        expiresAt: new Date(Date.now() + env.AUTH_RESET_TOKEN_TTL_MINUTES * 60_000),
-      },
-    });
-
-    console.info(`[dev-only] password reset token for ${mobile}: ${token}`);
-  }
-
-  // Identical response whether or not the number exists.
-  res.status(200).json({
-    success: true,
-    message: 'If that number is registered, a reset code has been issued',
-  });
+export const forgotPassword = async (_req: Request, _res: Response): Promise<void> => {
+  throw new AppError(
+    503,
+    'reset_unavailable',
+    'Password reset is not available yet',
+    undefined,
+    'পাসওয়ার্ড রিসেট এখনো চালু হয়নি। প্ল্যাটফর্ম অ্যাডমিনের সাথে যোগাযোগ করুন।',
+  );
 };
 
 export const resetPassword = async (req: Request, res: Response): Promise<void> => {

@@ -33,8 +33,13 @@ const envSchema = z.object({
   WEATHER_CACHE_MINUTES: z.coerce.number().int().min(1).max(180).default(15),
   /// Comma-separated RSS URLs for the Krishi Barta ingest.
   RSS_FEEDS: z.string().default(''),
+  /// Google Cloud Text-to-Speech key (not the Gemini AI Studio key).
+  GOOGLE_TTS_API_KEY: z.string().optional(),
   PUBLIC_API_URL: z.string().url().optional(),
   AI_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(30),
+  /// What the platform keeps from each vendor sale, as a percentage. Used to
+  /// derive the vendor's commission and net payout from real order subtotals.
+  PLATFORM_COMMISSION_PERCENT: z.coerce.number().min(0).max(100).default(10),
 });
 
 const parsed = envSchema.safeParse({ ...process.env, PORT: port });

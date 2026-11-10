@@ -6,7 +6,10 @@ export const notFoundHandler = (_req: Request, res: Response): void => {
   res.status(404).json({ success: false, code: 'not_found', message: 'Route not found', message_bn: 'পৃষ্ঠা পাওয়া যায়নি' });
 };
 
-
+/**
+ * Express identifies this as the error handler by its four-argument signature.
+ * Client-facing messages never include a stack, a query, or an upstream error.
+ */
 export const errorHandler = (
   err: unknown,
   _req: Request,

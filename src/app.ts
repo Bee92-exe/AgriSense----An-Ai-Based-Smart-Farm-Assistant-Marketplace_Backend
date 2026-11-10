@@ -12,13 +12,14 @@ import userRoutes from './routes/userRoutes';
 import diagnosisRoutes from './routes/diagnosisRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
 import productRoutes from './routes/productRoutes';
-import vendorRoutes from './routes/vendorRoutes';
-import expertRoutes from './routes/expertRoutes';
+import vendorRoutes, { publicVendorRouter } from './routes/vendorRoutes';
+import expertRoutes, { articleRouter, questionRouter } from './routes/expertRoutes';
 import aiRoutes from './routes/aiRoutes';
 import adminRoutes from './routes/adminRoutes';
 import newsRoutes from './routes/newsRoutes';
+import { orderRouter, vendorRatingRouter } from './routes/orderRoutes';
 import weatherRoutes from './routes/weatherRoutes';
-import { cropRouter, metaRouter } from './routes/cropRoutes';
+import { calendarRouter, cropRouter, metaRouter } from './routes/cropRoutes';
 
 const app = express();
 
@@ -82,15 +83,20 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/vendor', vendorRoutes);
 app.use('/api/expert', expertRoutes);
+app.use('/api/articles', articleRouter);
+app.use('/api/questions', questionRouter);
 app.use('/api/ai', aiRoutes);
 app.use('/api/voice', aiRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/orders', orderRouter);
+app.use('/api/vendors', vendorRatingRouter);
+app.use('/api/vendors', publicVendorRouter);
 app.use('/api/news', newsRoutes);
 app.use('/api/weather', weatherRoutes);
 app.use('/api/meta', metaRouter);
 app.use('/api/crops', cropRouter);
 // The app calls the calendar at the top level (`GET /calendar?crop=`).
-app.use('/api/calendar', cropRouter);
+app.use('/api/calendar', calendarRouter);
 
 app.get('/health', async (_req, res) => {
   await prisma.$queryRaw`SELECT 1`;
@@ -101,4 +107,3 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;
-

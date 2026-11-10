@@ -3,6 +3,8 @@ import request from 'supertest';
 import { afterAll, describe, expect, it, vi } from 'vitest';
 import app from '../src/app';
 import prisma from '../src/config/db';
+import { normalizeMobile } from '../src/lib/phone';
+import { hashToken } from '../src/lib/tokens';
 
 type Role = 'farmer' | 'vendor' | 'expert';
 
@@ -25,6 +27,12 @@ async function registerUser(options: { role?: Role; password?: string; mobile?: 
       password,
       role: options.role ?? 'farmer',
       district: 'Dhaka',
+      ...(options.role === 'vendor'
+        ? { shop_name: 'Test Agro Shop', license_no: 'TRAD-12345' }
+        : {}),
+      ...(options.role === 'expert'
+        ? { specialization: 'Rice pathology', certification: 'BSc Agriculture' }
+        : {}),
     });
 
   if (response.status === 201) createdUserIds.push(response.body.user.id);
@@ -112,6 +120,57 @@ describe('registration', () => {
     expect(response.status).toBe(400);
     expect(JSON.stringify(response.body)).toContain('mobile number');
   });
+
+  it('requires a letter and a number, and returns Bangla field details', async () => {
+    const lettersOnly = await request(app).post('/api/auth/register').send({
+      name: 'Test User',
+      mobile: nextMobile(),
+      password: 'OnlyLettersHere',
+      role: 'farmer',
+      district: 'Dhaka',
+    });
+    expect(lettersOnly.status).toBe(400);
+    expect(lettersOnly.body.details[0].field).toBe('password');
+    expect(lettersOnly.body.details[0].message_bn).toBeTruthy();
+
+    const numbersOnly = await request(app).post('/api/auth/register').send({
+      name: 'Test User',
+      mobile: nextMobile(),
+      password: '1234567890',
+      role: 'farmer',
+      district: 'Dhaka',
+    });
+    expect(numbersOnly.status).toBe(400);
+    expect(numbersOnly.body.details[0].field).toBe('password');
+  });
+
+  it('requires shop and licence fields for a vendor application', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'Shop Owner',
+      mobile: nextMobile(),
+      password: 'Str0ngPass!23',
+      role: 'vendor',
+      district: 'Dhaka',
+    });
+    expect(response.status).toBe(400);
+    expect(response.body.details.map((detail: { field: string }) => detail.field)).toEqual(
+      expect.arrayContaining(['shop_name', 'license_no']),
+    );
+  });
+
+  it('requires specialization and certification for an expert application', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'Plant Doctor',
+      mobile: nextMobile(),
+      password: 'Str0ngPass!23',
+      role: 'expert',
+      district: 'Dhaka',
+    });
+    expect(response.status).toBe(400);
+    expect(response.body.details.map((detail: { field: string }) => detail.field)).toEqual(
+      expect.arrayContaining(['specialization', 'certification']),
+    );
+  });
 });
 
 describe('login', () => {
@@ -177,6 +236,14 @@ describe('login', () => {
       .post('/api/auth/login')
       .send({ mobile, password });
     expect(afterUnlock.status).toBe(200);
+  });
+});
+
+describe('AI authorisation', () => {
+  it('rejects anonymous AI questions before any model call', async () => {
+    const response = await request(app).post('/api/ai/ask').send({ query: 'ধানের রোগ কী?' });
+    expect(response.status).toBe(401);
+    expect(response.body.code).toBe('unauthenticated');
   });
 });
 
@@ -275,54 +342,17 @@ describe('sessions', () => {
 });
 
 describe('password reset', () => {
-  it('issues a dev-only token, resets the password and invalidates old sessions', async () => {
-    const info = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+  it('refuses to issue a reset code while no delivery channel exists', async () => {
+    const { mobile } = await registerUser();
 
-    try {
-      const { response, mobile } = await registerUser();
-      const oldRefresh = response.body.refresh;
+    const forgot = await request(app)
+      .post('/api/auth/password/forgot')
+      .send({ mobile });
 
-      const forgot = await request(app)
-        .post('/api/auth/password/forgot')
-        .send({ mobile });
-      expect(forgot.status).toBe(200);
-
-      const logLine = info.mock.calls
-        .map((call) => call.join(' '))
-        .find((line) => line.includes(mobile));
-      expect(logLine).toBeTruthy();
-
-      const token = logLine?.split(': ').pop();
-      expect(token).toBeTruthy();
-
-      const reset = await request(app)
-        .post('/api/auth/password/reset')
-        .send({ token, newPassword: 'Res3tPass!67' });
-      expect(reset.status).toBe(200);
-
-      const oldRefreshResult = await request(app)
-        .post('/api/auth/refresh')
-        .send({ refresh: oldRefresh });
-      expect(oldRefreshResult.status).toBe(401);
-
-      const oldPassword = await request(app)
-        .post('/api/auth/login')
-        .send({ mobile, password: 'Str0ngPass!23' });
-      expect(oldPassword.status).toBe(401);
-
-      const newPassword = await request(app)
-        .post('/api/auth/login')
-        .send({ mobile, password: 'Res3tPass!67' });
-      expect(newPassword.status).toBe(200);
-
-      const reused = await request(app)
-        .post('/api/auth/password/reset')
-        .send({ token, newPassword: 'Ag4inPass!89' });
-      expect(reused.status).toBe(400);
-      expect(reused.body.code).toBe('invalid_reset_token');
-    } finally {
-      info.mockRestore();
-    }
+    // A token here could only reach the server log, which would let anyone who
+    // can read that log take over the account. Failing closed is the fix.
+    expect(forgot.status).toBe(503);
+    expect(forgot.body.code).toBe('reset_unavailable');
   });
 
   it('answers identically for an unknown number', async () => {
@@ -330,8 +360,55 @@ describe('password reset', () => {
       .post('/api/auth/password/forgot')
       .send({ mobile: nextMobile() });
 
-    expect(response.status).toBe(200);
-    expect(response.body.success).toBe(true);
+    expect(response.status).toBe(503);
+    expect(response.body.code).toBe('reset_unavailable');
+  });
+
+  it('still honours a token that already exists and invalidates old sessions', async () => {
+    const { response, mobile } = await registerUser();
+    const oldRefresh = response.body.refresh;
+
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { mobileNumber: normalizeMobile(mobile)! },
+      select: { id: true },
+    });
+
+    // The endpoint no longer mints tokens, so the mechanics are exercised with
+    // one written directly — the same shape an SMS provider would create.
+    const token = crypto.randomBytes(32).toString('base64url');
+    await prisma.passwordResetToken.create({
+      data: {
+        tokenHash: hashToken(token),
+        userId: user.id,
+        expiresAt: new Date(Date.now() + 10 * 60_000),
+      },
+    });
+
+    const reset = await request(app)
+      .post('/api/auth/password/reset')
+      .send({ token, newPassword: 'Res3tPass!67' });
+    expect(reset.status).toBe(200);
+
+    const oldRefreshResult = await request(app)
+      .post('/api/auth/refresh')
+      .send({ refresh: oldRefresh });
+    expect(oldRefreshResult.status).toBe(401);
+
+    const oldPassword = await request(app)
+      .post('/api/auth/login')
+      .send({ mobile, password: 'Str0ngPass!23' });
+    expect(oldPassword.status).toBe(401);
+
+    const newPassword = await request(app)
+      .post('/api/auth/login')
+      .send({ mobile, password: 'Res3tPass!67' });
+    expect(newPassword.status).toBe(200);
+
+    const reused = await request(app)
+      .post('/api/auth/password/reset')
+      .send({ token, newPassword: 'Ag4inPass!89' });
+    expect(reused.status).toBe(400);
+    expect(reused.body.code).toBe('invalid_reset_token');
   });
 });
 

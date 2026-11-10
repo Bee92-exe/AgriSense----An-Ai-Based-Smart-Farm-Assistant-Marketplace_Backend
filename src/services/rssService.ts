@@ -56,6 +56,22 @@ export function parseRss(xml: string): RssItem[] {
 }
 
 /**
+ * The curated feeds are general Bengali news, so an unfiltered ingest would bury
+ * the draft queue under politics and sport. Only items that mention farming are
+ * kept — and a human still approves every one of them.
+ */
+const AGRICULTURE_KEYWORDS = [
+  'কৃষি', 'কৃষক', 'ধান', 'আলু', 'টমেটো', 'সবজি', 'ফসল', 'ফলন', 'বীজ', 'সার',
+  'কীট', 'পোকা', 'রোগ', 'সেচ', 'বৃষ্টি', 'আবহাওয়া', 'বাগান', 'জমি', 'খামার',
+  'agriculture', 'farmer', 'crop', 'harvest', 'paddy', 'fertiliser', 'fertilizer',
+];
+
+export function isAgricultureRelated(...texts: Array<string | undefined>): boolean {
+  const haystack = texts.filter(Boolean).join(' ').toLowerCase();
+  return AGRICULTURE_KEYWORDS.some((keyword) => haystack.includes(keyword.toLowerCase()));
+}
+
+/**
  * Bangla-aware tag stripping for feed descriptions. Feeds routinely embed
  * HTML; shipping that into a card would show literal `<p>` to a farmer.
  */

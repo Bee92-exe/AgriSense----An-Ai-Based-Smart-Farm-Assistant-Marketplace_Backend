@@ -4,7 +4,13 @@ import prisma from '../config/db';
 import { AppError } from '../lib/errors';
 import type { AuthRequest } from '../middleware/authMiddleware';
 import { diagnoseLeafWithRAG } from '../services/ragService';
-import { resolveCropScanImage, uploadCropScanImage } from '../services/storageService';
+import {
+  fallbackUpload,
+  resolveCropScanImage,
+  sniffImageMime,
+  uploadCropScanImage,
+  type UploadResult,
+} from '../services/storageService';
 
 interface TreatmentPayload {
   steps?: string[];
@@ -134,10 +140,26 @@ export const scanLeaf = async (req: AuthRequest, res: Response): Promise<void> =
     }
   }
 
-  const uploadResult = await uploadCropScanImage(file.path, file.originalname, file.mimetype);
+  // Storage is not on the critical path: a bucket outage must still return the
+  // diagnosis the farmer is waiting for. Losing the photo is recoverable;
+  // losing the answer is not.
+  let uploadResult: UploadResult;
+  try {
+    uploadResult = await uploadCropScanImage(file.path, file.originalname, file.mimetype);
+  } catch (storageError) {
+    console.error(
+      '[Diagnosis] Image storage failed, continuing without a stored photo:',
+      storageError instanceof Error ? storageError.message : storageError,
+    );
+    uploadResult = fallbackUpload(file.path);
+  }
+
   const fileBuffer = fs.readFileSync(file.path);
+  // The multipart part usually arrives as octet-stream; both the model and the
+  // bucket need the real type, so it is read from the bytes once, here.
+  const detectedMime = sniffImageMime(fileBuffer, file.originalname, file.mimetype);
   const hintCrop = typeof req.body.crop === 'string' ? req.body.crop : undefined;
-  const ragResult = await diagnoseLeafWithRAG(fileBuffer, file.mimetype, hintCrop);
+  const ragResult = await diagnoseLeafWithRAG(fileBuffer, detectedMime, hintCrop);
 
   const ratio = confidenceRatio(ragResult.confidence);
   const healthy = ragResult.is_healthy === true;

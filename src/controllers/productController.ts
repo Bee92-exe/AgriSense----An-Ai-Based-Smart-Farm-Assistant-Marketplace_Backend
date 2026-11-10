@@ -1,36 +1,89 @@
 import crypto from 'crypto';
 import { Request, Response } from 'express';
 import prisma from '../config/db';
-import { AuthRequest } from '../middleware/authMiddleware';
+import { AppError } from '../lib/errors';
+import { isVendorVerified } from '../lib/serializers';
+import type { AuthRequest } from '../middleware/authMiddleware';
 
-// Seed products into DB if empty (runs once on first request)
-const seedProducts = async () => {
+/**
+ * Haat_Bazar catalogue.
+ *
+ * The wire shape is snake_case because `Product.fromJson` in the app parses
+ * exactly those keys; the previous camelCase payload (`stockLevel`, `vendorName`)
+ * silently produced empty products on the device.
+ */
+
+type ProductWithVendor = {
+  id: string;
+  name: string;
+  category: string;
+  description: string | null;
+  price: number;
+  stockLevel: number;
+  rating: number;
+  imageUrl: string | null;
+  vendorId: string;
+  vendor?: {
+    shopName?: string;
+    verificationStatus?: string;
+    rating?: number;
+    user?: { name: string } | null;
+  } | null;
+};
+
+export function toWireProduct(product: ProductWithVendor) {
+  return {
+    id: product.id,
+    name: product.name,
+    name_bn: null,
+    category: product.category,
+    price: Math.round(product.price),
+    stock: product.stockLevel,
+    in_stock: product.stockLevel > 0,
+    description: product.description,
+    image_url: product.imageUrl,
+    active_ingredient: null,
+    target_diseases: [] as string[],
+    vendor: {
+      id: product.vendorId,
+      shop_name: product.vendor?.shopName ?? product.vendor?.user?.name ?? '',
+      verified: isVendorVerified(product.vendor?.verificationStatus),
+      rating: product.vendor?.rating ?? product.rating,
+    },
+  };
+}
+
+const vendorInclude = {
+  vendor: { include: { user: { select: { name: true } } } },
+} as const;
+
+/** Seeds a demo catalogue once, owned by a vendor account that cannot sign in. */
+const seedProducts = async (): Promise<void> => {
   const count = await prisma.product.count();
   if (count > 0) return;
 
-  // We need at least one vendor. Create a system vendor if none exists.
   let vendor = await prisma.vendor.findFirst();
   if (!vendor) {
-    // Check if a system vendor user exists
     let vendorUser = await prisma.user.findUnique({ where: { mobileNumber: 'system-vendor' } });
     if (!vendorUser) {
       vendorUser = await prisma.user.create({
         data: {
           name: 'AgriSense Market',
           mobileNumber: 'system-vendor',
-          // Not a valid argon2 hash: this account exists to own the seeded
-          // catalogue and is deliberately impossible to sign in to.
+          // Not a valid argon2 hash: this account owns the seeded catalogue and
+          // is deliberately impossible to sign in to.
           passwordHash: crypto.randomBytes(48).toString('hex'),
           role: 'VENDOR',
           location: 'ঢাকা',
-        }
+        },
       });
     }
     vendor = await prisma.vendor.create({
       data: {
         userId: vendorUser.id,
         shopName: 'AgriSense Official Store',
-      }
+        verificationStatus: 'ACTIVE',
+      },
     });
   }
 
@@ -42,181 +95,111 @@ const seedProducts = async () => {
     { name: 'DAP সার (DAP Fertilizer)', category: 'Fertilizer', price: 1500, stockLevel: 40, rating: 4.6, description: 'ফসফেট সমৃদ্ধ সার' },
     { name: 'হাত কোদাল (Hand Hoe)', category: 'Tools', price: 350, stockLevel: 25, rating: 4.3, description: 'মাটি আলগা করার জন্য উন্নত মানের কোদাল' },
     { name: 'সরিষার বীজ (Mustard Seeds)', category: 'Seeds', price: 300, stockLevel: 60, rating: 4.1, description: 'রবি মৌসুমের সরিষা বীজ' },
-    { name: 'ছত্রাকনাশক (Fungicide)', category: 'Pesticide', price: 750, stockLevel: 18, rating: 4.4, description: 'ফসলের ছত্রাক রোগ দমনে কার্যকর' },
+    { name: 'ছত্রাকনাশক (Fungicide)', category: 'Fungicide', price: 750, stockLevel: 18, rating: 4.4, description: 'ফসলের ছত্রাক রোগ দমনে কার্যকর' },
   ];
 
-  for (const p of products) {
-    await prisma.product.create({
-      data: {
-        ...p,
-        vendorId: vendor.id,
-      }
-    });
+  for (const product of products) {
+    await prisma.product.create({ data: { ...product, vendorId: vendor.id } });
   }
   console.log('[SEED] Products seeded successfully');
 };
 
 export const getAllProducts = async (req: Request, res: Response): Promise<void> => {
-  try {
-    await seedProducts();
+  await seedProducts();
 
-    const category = req.query.category as string | undefined;
-    const search = req.query.search as string | undefined;
-    
-    let where: any = {};
-    if (category && category !== 'All') {
-      where.category = category;
-    }
-    if (search) {
-      where.name = { contains: search };
-    }
+  const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
+  const text = typeof req.query.text === 'string' ? req.query.text.trim() : search;
+  const category = typeof req.query.category === 'string' ? req.query.category : '';
+  const priceMin = Number(req.query.price_min ?? NaN);
+  const priceMax = Number(req.query.price_max ?? NaN);
+  const inStockOnly = req.query.in_stock === 'true' || req.query.in_stock === '1';
+  const page = Math.max(1, Number(req.query.page ?? 1) || 1);
+  const limit = Math.min(50, Math.max(1, Number(req.query.limit ?? 20) || 20));
 
-    const products = await prisma.product.findMany({
-      where,
-      include: {
-        vendor: {
-          include: { user: { select: { name: true } } }
+  const where = {
+    ...(category && category !== 'All' ? { category } : {}),
+    ...(text ? { name: { contains: text, mode: 'insensitive' as const } } : {}),
+    ...(Number.isFinite(priceMin) || Number.isFinite(priceMax)
+      ? {
+          price: {
+            ...(Number.isFinite(priceMin) ? { gte: priceMin } : {}),
+            ...(Number.isFinite(priceMax) ? { lte: priceMax } : {}),
+          },
         }
-      },
+      : {}),
+    ...(inStockOnly ? { stockLevel: { gt: 0 } } : {}),
+  };
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      include: vendorInclude,
       orderBy: { createdAt: 'desc' },
-    });
+      skip: (page - 1) * limit,
+      take: limit,
+    }),
+    prisma.product.count({ where }),
+  ]);
 
-    const mapped = products.map(p => ({
-      id: p.id,
-      name: p.name,
-      category: p.category,
-      price: p.price,
-      rating: p.rating,
-      stockLevel: p.stockLevel,
-      description: p.description,
-      imageUrl: p.imageUrl,
-      vendorName: p.vendor?.user?.name || p.vendor?.shopName || 'Unknown',
-    }));
+  res.status(200).json({
+    success: true,
+    products: products.map(toWireProduct),
+    pagination: { page, limit, total },
+  });
+};
 
-    res.status(200).json({ success: true, products: mapped });
-  } catch (error: any) {
-    console.error('Products Error:', error.message);
-    res.status(500).json({ success: false, message: 'Failed to fetch products' });
-  }
+export const getProductCategories = async (_req: Request, res: Response): Promise<void> => {
+  await seedProducts();
+  const rows = await prisma.product.findMany({
+    distinct: ['category'],
+    select: { category: true },
+    orderBy: { category: 'asc' },
+  });
+  res.status(200).json({ success: true, categories: rows.map((row) => row.category) });
 };
 
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const productId = req.params.id as string;
-    const product = await prisma.product.findUnique({
-      where: { id: productId },
-      include: {
-        vendor: {
-          include: { user: { select: { name: true, location: true } } }
-        }
-      },
-    });
-
-    if (!product) {
-      res.status(404).json({ success: false, message: 'Product not found' });
-      return;
-    }
-
-    const vendorData = product as any;
-    res.status(200).json({
-      success: true,
-      product: {
-        id: product.id,
-        name: product.name,
-        category: product.category,
-        price: product.price,
-        rating: product.rating,
-        stockLevel: product.stockLevel,
-        description: product.description,
-        imageUrl: product.imageUrl,
-        vendorName: vendorData.vendor?.user?.name || vendorData.vendor?.shopName || 'Unknown',
-        vendorLocation: vendorData.vendor?.user?.location || '',
-      }
-    });
-  } catch (error: any) {
-    res.status(500).json({ success: false, message: 'Failed to fetch product' });
+  const product = await prisma.product.findUnique({
+    where: { id: String(req.params.id) },
+    include: vendorInclude,
+  });
+  if (!product) {
+    throw new AppError(404, 'not_found', 'Product not found', undefined, 'পণ্যটি পাওয়া যায়নি।');
   }
+  res.status(200).json({ success: true, product: toWireProduct(product) });
 };
 
-export const createOrder = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      res.status(401).json({ success: false, message: 'Unauthorized' });
-      return;
-    }
+/**
+ * FR-16 products for a diagnosis.
+ *
+ * There is no curated disease-to-product mapping (a deliberate decision), so
+ * this returns in-stock crop-protection items and says so in `match_reason_bn`.
+ * It never claims a product treats the diagnosed disease.
+ */
+export const getMatchedProducts = async (req: AuthRequest, res: Response): Promise<void> => {
+  const userId = req.user?.id;
+  if (!userId) throw new AppError(401, 'unauthenticated', 'Authentication required');
 
-    const { items, deliveryAddress, paymentMethod } = req.body;
-    // items: [{ productId, quantity }]
-
-    if (!items || items.length === 0) {
-      res.status(400).json({ success: false, message: 'No items in cart' });
-      return;
-    }
-
-    // Calculate totals
-    let totalAmount = 0;
-    const orderDetails: { productId: string; quantity: number; subtotal: number }[] = [];
-
-    for (const item of items) {
-      const product = await prisma.product.findUnique({ where: { id: item.productId } });
-      if (!product) {
-        res.status(400).json({ success: false, message: `Product ${item.productId} not found` });
-        return;
-      }
-      const subtotal = product.price * item.quantity;
-      totalAmount += subtotal;
-      orderDetails.push({ productId: item.productId, quantity: item.quantity, subtotal });
-    }
-
-    const order = await prisma.order.create({
-      data: {
-        userId,
-        totalAmount,
-        paymentMethod: paymentMethod || 'Cash on Delivery',
-        deliveryAddress: deliveryAddress || 'Not specified',
-        details: {
-          create: orderDetails,
-        }
-      },
-      include: { details: true },
-    });
-
-    // Decrease stock levels
-    for (const item of items) {
-      await prisma.product.update({
-        where: { id: item.productId },
-        data: { stockLevel: { decrement: item.quantity } },
-      });
-    }
-
-    res.status(201).json({ success: true, order });
-  } catch (error: any) {
-    console.error('Order Error:', error.message);
-    res.status(500).json({ success: false, message: 'Failed to create order' });
+  const diagnosis = await prisma.diagnosis.findFirst({
+    where: { id: String(req.params.diagnosisId), userId },
+    select: { id: true },
+  });
+  if (!diagnosis) {
+    throw new AppError(404, 'not_found', 'Diagnosis not found', undefined, 'রোগ নির্ণয়ের তথ্য পাওয়া যায়নি।');
   }
-};
 
-export const getMyOrders = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      res.status(401).json({ success: false, message: 'Unauthorized' });
-      return;
-    }
+  const products = await prisma.product.findMany({
+    where: { stockLevel: { gt: 0 }, category: { in: ['Pesticide', 'Fungicide', 'Fertilizer'] } },
+    include: vendorInclude,
+    orderBy: { rating: 'desc' },
+    take: 6,
+  });
 
-    const orders = await prisma.order.findMany({
-      where: { userId },
-      include: {
-        details: {
-          include: { product: true }
-        }
-      },
-      orderBy: { orderDate: 'desc' },
-    });
-
-    res.status(200).json({ success: true, orders });
-  } catch (error: any) {
-    res.status(500).json({ success: false, message: 'Failed to fetch orders' });
-  }
+  res.status(200).json({
+    success: true,
+    data: products.map((product) => ({
+      ...toWireProduct(product),
+      match_reason_bn: 'কৃষি কর্মকর্তার পরামর্শ অনুযায়ী ব্যবহার করুন — এই তালিকা রোগভিত্তিক নয়।',
+    })),
+  });
 };

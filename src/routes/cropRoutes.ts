@@ -21,4 +21,12 @@ export const cropRouter: Router = Router();
 cropRouter.use(authenticateToken, requireActiveAccount);
 cropRouter.post('/recommend', recommendCrops);
 cropRouter.get('/recommendations', savedRecommendations);
-cropRouter.get('/calendar', getCalendar);
+
+/**
+ * `/api/calendar` — the app calls the calendar at the top level, so it gets its
+ * own mount. Keeping it on `cropRouter` as well would have meant
+ * `/api/calendar/calendar`, which is exactly the 404 this replaces.
+ */
+export const calendarRouter: Router = Router();
+calendarRouter.use(authenticateToken, requireActiveAccount);
+calendarRouter.get('/', getCalendar);

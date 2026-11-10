@@ -37,6 +37,9 @@ enum NewsCategory {
   PEST
   VIRUS
   NUTRIENT_DEFICIENCY
+  WEATHER
+  MARKET
+  ADVISORY
 }
 
 /// Mirrors the app's `Severity` (low/medium/high/urgent).
@@ -89,6 +92,15 @@ model User {
   newsAuthored        NewsItem[]           @relation("NewsAuthor")
   newsReads           NewsRead[]           @relation("NewsReader")
 
+  // Community surfaces (expert articles, questions, consultations)
+  articleLikes        ArticleLike[]        @relation("ArticleLikes")
+  articleSaves        ArticleSave[]        @relation("ArticleSaves")
+  articleRatings      ArticleRating[]      @relation("ArticleRatings")
+  articleComments     ArticleComment[]     @relation("ArticleComments")
+  askedQuestions      ExpertQuestion[]     @relation("FarmerQuestions")
+  consultations       ConsultationBooking[] @relation("FarmerBookings")
+  vendorNotes         VendorCustomerNote[] @relation("VendorCustomerNotes")
+
   @@index([role])
   @@index([status])
 }
@@ -112,6 +124,18 @@ model Vendor {
   userId             String    @unique @db.Uuid
   user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   products           Product[]
+  orders             Order[]
+
+  /// Aggregate of `VendorRating`, recomputed on every new rating.
+  rating             Float     @default(0)
+  ratingCount        Int       @default(0)
+  ratings            VendorRating[]
+
+  /// The shop's own bookkeeping: notes about buyers, the payout ledger and the
+  /// storefront visit counter the business screen reports.
+  customerNotes      VendorCustomerNote[]
+  payouts            VendorPayout[]
+  visits             VendorVisit[]
 }
 
 model Expert {
@@ -125,6 +149,15 @@ model Expert {
 
   reviewedDiagnoses Diagnosis[]     @relation("ExpertReviews")
   knowledgeBase     KnowledgeBase[]
+
+  /// The expert's public writing, their queue of farmer questions, the
+  /// consultations they sell and the colleagues they have connected with.
+  articles          ExpertArticle[]
+  questions         ExpertQuestion[]     @relation("ExpertAnswers")
+  plans             ConsultationPlan[]
+  peers             ExpertPeer[]         @relation("ExpertPeerOwner")
+  peerOf            ExpertPeer[]         @relation("ExpertPeerTarget")
+  sourceSuggestions NewsSourceSuggestion[]
 }
 
 // ------------------------------------------
@@ -228,18 +261,61 @@ model Product {
 
 model Order {
   id              String   @id @default(uuid()) @db.Uuid
+
+  /// Nullable so the column can be added to an existing table; the API always
+  /// writes one and falls back to a derived number for older rows.
+  orderNo         String?  @unique @db.VarChar(24)
   orderDate       DateTime @default(now())
   status          String   @default("PENDING") @db.VarChar(30)
   totalAmount     Float
   paymentMethod   String   @db.VarChar(40)
   deliveryAddress String   @db.Text
 
+  /// touch | voice (FR-19 `placed_via`).
+  placedVia       String   @default("touch") @db.VarChar(10)
+  note            String?  @db.Text
+
+  /// Idempotency key from the app; a retry returns the original order.
+  clientUuid      String?  @unique @db.Uuid
+
   userId          String   @db.Uuid
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  /// A basket is single-vendor, so the order itself belongs to one vendor.
+  vendorId        String?  @db.Uuid
+  vendor          Vendor?  @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+
   details         OrderDetail[]
+  events          OrderEvent[]
 
   @@index([userId])
+  @@index([vendorId])
+}
+
+/// Append-only status history, because the farmer-facing timeline must show
+/// when each transition actually happened rather than only the current state.
+model OrderEvent {
+  id      String   @id @default(uuid()) @db.Uuid
+  orderId String   @db.Uuid
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status  String   @db.VarChar(30)
+  at      DateTime @default(now())
+
+  @@index([orderId])
+}
+
+/// FR-26. One rating per farmer per vendor; `userId` is taken from the token.
+model VendorRating {
+  id        String   @id @default(uuid()) @db.Uuid
+  vendorId  String   @db.Uuid
+  vendor    Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@unique([vendorId, userId])
+  @@index([vendorId])
 }
 
 model OrderDetail {
@@ -372,4 +448,224 @@ model KnowledgeChunk {
 
   @@index([diseaseId])
   @@map("knowledge_chunks")
+}
+
+// ------------------------------------------
+// Vendor CRM (payouts, customer book, visits)
+// ------------------------------------------
+
+/// A shop's private note about a buyer, plus the follow-up flag. One row per
+/// (vendor, customer) pair, so a note can be edited but never duplicated.
+model VendorCustomerNote {
+  id         String   @id @default(uuid()) @db.Uuid
+  vendorId   String   @db.Uuid
+  vendor     Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customerId String   @db.Uuid
+  customer   User     @relation("VendorCustomerNotes", fields: [customerId], references: [id], onDelete: Cascade)
+  note       String   @db.Text
+  followUp   Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+
+  @@unique([vendorId, customerId])
+  @@index([vendorId])
+}
+
+/// Append-only payout ledger. A row is money the platform owes the shop, or has
+/// already paid. The net figure is derived from real order subtotals, never
+/// invented by the client.
+model VendorPayout {
+  id          String    @id @default(uuid()) @db.Uuid
+  vendorId    String    @db.Uuid
+  vendor      Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  amount      Float
+  status      String    @default("PENDING") @db.VarChar(20) // PENDING | PAID
+  reference   String?   @db.VarChar(120)
+  periodStart DateTime?
+  periodEnd   DateTime?
+  createdAt   DateTime  @default(now())
+  paidAt      DateTime?
+
+  @@index([vendorId, createdAt])
+}
+
+/// One farmer opening a shop's storefront. Recorded by an explicit app event so
+/// "visits" and conversion are measured rather than estimated.
+model VendorVisit {
+  id       String   @id @default(uuid()) @db.Uuid
+  vendorId String   @db.Uuid
+  vendor   Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  userId   String?  @db.Uuid
+  at       DateTime @default(now())
+
+  @@index([vendorId, at])
+}
+
+// ------------------------------------------
+// Expert community (articles, questions, consultations)
+// ------------------------------------------
+
+/// A published piece of expert writing. Farmers read it in the advisory feed;
+/// the author sees their own drafts and stats.
+model ExpertArticle {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String   @db.VarChar(200)
+  summary     String   @db.Text
+  body        String   @db.Text
+  crop        String   @db.VarChar(40)
+  /// Index into the app's painted cover tints; no image download required.
+  coverTone   Int      @default(0)
+  status      String   @default("PUBLISHED") @db.VarChar(20) // DRAFT | PUBLISHED
+  hidden      Boolean  @default(false)
+  views       Int      @default(0)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  expertId    String   @db.Uuid
+  expert      Expert   @relation(fields: [expertId], references: [id], onDelete: Cascade)
+
+  likes       ArticleLike[]
+  saves       ArticleSave[]
+  ratings     ArticleRating[]
+  comments    ArticleComment[]
+
+  @@index([status, publishedAt])
+  @@index([crop])
+  @@index([expertId])
+}
+
+/// Idempotent like: the composite id makes a second tap a no-op, not a double.
+model ArticleLike {
+  articleId String        @db.Uuid
+  article   ExpertArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String        @db.Uuid
+  user      User          @relation("ArticleLikes", fields: [userId], references: [id], onDelete: Cascade)
+  at        DateTime      @default(now())
+
+  @@id([articleId, userId])
+  @@index([userId])
+}
+
+model ArticleSave {
+  articleId String        @db.Uuid
+  article   ExpertArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String        @db.Uuid
+  user      User          @relation("ArticleSaves", fields: [userId], references: [id], onDelete: Cascade)
+  at        DateTime      @default(now())
+
+  @@id([articleId, userId])
+  @@index([userId])
+}
+
+/// One rating per reader per article; the article's average is recomputed on
+/// write so a listing never has to aggregate on read.
+model ArticleRating {
+  articleId String        @db.Uuid
+  article   ExpertArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String        @db.Uuid
+  user      User          @relation("ArticleRatings", fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int
+  at        DateTime      @default(now())
+
+  @@id([articleId, userId])
+}
+
+model ArticleComment {
+  id        String        @id @default(uuid()) @db.Uuid
+  articleId String        @db.Uuid
+  article   ExpertArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  userId    String        @db.Uuid
+  user      User          @relation("ArticleComments", fields: [userId], references: [id], onDelete: Cascade)
+  body      String        @db.Text
+  likes     Int           @default(0)
+  createdAt DateTime      @default(now())
+
+  @@index([articleId, createdAt])
+}
+
+/// A farmer asking a person, not an article. `expertId` stays null until an
+/// expert answers, which is also what makes the queue shared.
+model ExpertQuestion {
+  id          String    @id @default(uuid()) @db.Uuid
+  farmerId    String    @db.Uuid
+  farmer      User      @relation("FarmerQuestions", fields: [farmerId], references: [id], onDelete: Cascade)
+  expertId    String?   @db.Uuid
+  expert      Expert?   @relation("ExpertAnswers", fields: [expertId], references: [id], onDelete: SetNull)
+  crop        String    @db.VarChar(40)
+  question    String    @db.Text
+  /// `message | call | video` — how the farmer wants the answer.
+  mode        String    @default("message") @db.VarChar(20)
+  urgent      Boolean   @default(false)
+  status      String    @default("OPEN") @db.VarChar(20) // OPEN | ANSWERED
+  reply       String?   @db.Text
+  answeredAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([status, createdAt])
+  @@index([expertId])
+  @@index([farmerId])
+}
+
+/// A consultation subscription an expert sells.
+model ConsultationPlan {
+  id        String   @id @default(uuid()) @db.Uuid
+  expertId  String   @db.Uuid
+  expert    Expert   @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  title     String   @db.VarChar(160)
+  /// `monthly | quarterly | yearly`
+  period    String   @db.VarChar(20)
+  price     Float
+  perks     String[] @default([])
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  bookings  ConsultationBooking[]
+
+  @@index([expertId])
+}
+
+model ConsultationBooking {
+  id        String   @id @default(uuid()) @db.Uuid
+  planId    String   @db.Uuid
+  plan      ConsultationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  farmerId  String   @db.Uuid
+  farmer    User     @relation("FarmerBookings", fields: [farmerId], references: [id], onDelete: Cascade)
+  topic     String   @db.VarChar(200)
+  /// `call | video | visit`
+  mode      String   @db.VarChar(20)
+  at        DateTime
+  minutes   Int      @default(30)
+  status    String   @default("UPCOMING") @db.VarChar(20) // UPCOMING | DONE | CANCELLED
+  createdAt DateTime @default(now())
+
+  @@index([planId, at])
+  @@index([farmerId])
+}
+
+/// A connection between two experts. Directed: the owner row records who
+/// connected to whom, so unfollowing does not delete the other direction.
+model ExpertPeer {
+  expertId    String   @db.Uuid
+  expert      Expert   @relation("ExpertPeerOwner", fields: [expertId], references: [id], onDelete: Cascade)
+  peerId      String   @db.Uuid
+  peer        Expert   @relation("ExpertPeerTarget", fields: [peerId], references: [id], onDelete: Cascade)
+  connectedAt DateTime @default(now())
+
+  @@id([expertId, peerId])
+  @@index([peerId])
+}
+
+/// An expert proposing a news feed for the admin to add.
+model NewsSourceSuggestion {
+  id        String   @id @default(uuid()) @db.Uuid
+  expertId  String   @db.Uuid
+  expert    Expert   @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  name      String   @db.VarChar(160)
+  url       String   @db.Text
+  note      String?  @db.Text
+  status    String   @default("PENDING") @db.VarChar(20)
+  createdAt DateTime @default(now())
+
+  @@index([status])
+  @@index([expertId])
 }

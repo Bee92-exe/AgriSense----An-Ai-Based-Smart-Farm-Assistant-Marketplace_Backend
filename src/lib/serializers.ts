@@ -28,6 +28,24 @@ export const publicUserSelect = {
 
 export type PublicUserRecord = Prisma.UserGetPayload<{ select: typeof publicUserSelect }>;
 
+/**
+ * One vocabulary for vendor verification.
+ *
+ * The admin flow writes `VERIFIED`; an older seed wrote `ACTIVE`; the app models
+ * `verified`. Anything that asked "is this shop verified?" used to pick one of
+ * the three and disagree with the others, which is how a properly approved shop
+ * could still show "not verified yet" on its own dashboard.
+ */
+export function isVendorVerified(status: string | null | undefined): boolean {
+  const raw = (status ?? '').toUpperCase();
+  return raw === 'VERIFIED' || raw === 'ACTIVE';
+}
+
+/** The wire value `VendorProfile.isVerified` in the app reads. */
+export function wireVendorStatus(status: string | null | undefined): string {
+  return isVendorVerified(status) ? 'verified' : (status ?? 'pending').toLowerCase();
+}
+
 function parseCropPreferences(raw: string | null | undefined): string[] {
   if (!raw) return [];
   try {
@@ -65,7 +83,7 @@ export function toPublicUser(user: PublicUserRecord) {
       ? {
           vendor: {
             shop_name: user.vendorProfile.shopName,
-            verification_status: user.vendorProfile.verificationStatus.toLowerCase(),
+            verification_status: wireVendorStatus(user.vendorProfile.verificationStatus),
           },
         }
       : {}),
@@ -97,7 +115,7 @@ export function toAdminVendor(vendor: AdminVendorRecord, reason?: string | null)
     owner_mobile: vendor.user.mobileNumber,
     district: vendor.user.location ?? '',
     license_no: vendor.businessLicense ?? '',
-    status: vendor.verificationStatus.toLowerCase(),
+    status: wireVendorStatus(vendor.verificationStatus),
     submitted_at: vendor.user.createdAt.toISOString(),
     ...(reason ? { reason } : {}),
   };

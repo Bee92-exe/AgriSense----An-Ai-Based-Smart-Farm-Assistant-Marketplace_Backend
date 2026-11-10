@@ -2,8 +2,27 @@ import { Request, Response } from 'express';
 import prisma from '../config/db';
 import { env } from '../config/env';
 import { AppError } from '../lib/errors';
+import { isVendorVerified } from '../lib/serializers';
 import type { AuthRequest } from '../middleware/authMiddleware';
-import { parseRss, plainText } from '../services/rssService';
+import { isAgricultureRelated, parseRss, plainText } from '../services/rssService';
+
+/** The enum values the app can render; anything else is a client mistake. */
+const CATEGORIES = ['DISEASE', 'PEST', 'VIRUS', 'NUTRIENT_DEFICIENCY', 'WEATHER', 'MARKET', 'ADVISORY'] as const;
+const SEVERITIES = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const;
+
+function pickCategory(value: unknown): (typeof CATEGORIES)[number] {
+  const candidate = typeof value === 'string' ? value.trim().toUpperCase().replace(/[-\s]/g, '_') : '';
+  return (CATEGORIES as readonly string[]).includes(candidate)
+    ? (candidate as (typeof CATEGORIES)[number])
+    : 'DISEASE';
+}
+
+function pickSeverity(value: unknown): (typeof SEVERITIES)[number] {
+  const candidate = typeof value === 'string' ? value.trim().toUpperCase() : '';
+  return (SEVERITIES as readonly string[]).includes(candidate)
+    ? (candidate as (typeof SEVERITIES)[number])
+    : 'LOW';
+}
 
 /** Wire shape the Flutter `NewsItem.fromJson` already expects. */
 function toWire(item: {
@@ -55,12 +74,16 @@ export const listNews = async (req: AuthRequest, res: Response): Promise<void> =
   const page = Math.max(1, Number(req.query.page ?? 1) || 1);
   const limit = Math.min(50, Math.max(1, Number(req.query.limit ?? 20) || 20));
   const crop = typeof req.query.crop === 'string' ? req.query.crop : undefined;
-  const category = typeof req.query.category === 'string' ? req.query.category.toUpperCase() : undefined;
+  const requestedCategory =
+    typeof req.query.category === 'string' ? req.query.category.trim().toUpperCase().replace(/[-\s]/g, '_') : '';
+  const category = (CATEGORIES as readonly string[]).includes(requestedCategory)
+    ? (requestedCategory as (typeof CATEGORIES)[number])
+    : undefined;
 
   const where = {
     status: 'PUBLISHED' as const,
     ...(crop ? { crop } : {}),
-    ...(category ? { category: category as never } : {}),
+    ...(category ? { category } : {}),
   };
 
   const [items, total] = await Promise.all([
@@ -167,7 +190,7 @@ export const getNewsProducts = async (req: Request, res: Response): Promise<void
       vendor: {
         id: product.vendorId,
         shop_name: product.vendor?.shopName ?? '',
-        verified: (product.vendor?.verificationStatus ?? '') === 'ACTIVE',
+        verified: isVendorVerified(product.vendor?.verificationStatus),
         rating: product.rating,
       },
     })),
@@ -193,8 +216,8 @@ export const createNews = async (req: AuthRequest, res: Response): Promise<void>
   }
 
   const publish = body.publish === true;
-  const category = typeof body.category === 'string' ? body.category.toUpperCase() : 'DISEASE';
-  const severity = typeof body.severity === 'string' ? body.severity.toUpperCase() : 'LOW';
+  const category = pickCategory(body.category);
+  const severity = pickSeverity(body.severity);
 
   const item = await prisma.newsItem.create({
     data: {
@@ -204,8 +227,8 @@ export const createNews = async (req: AuthRequest, res: Response): Promise<void>
       summaryEn: typeof body.summary_en === 'string' ? body.summary_en : null,
       symptomsBn: typeof body.symptoms_bn === 'string' ? body.symptoms_bn : null,
       advisedActionBn: typeof body.advised_action_bn === 'string' ? body.advised_action_bn : null,
-      category: category as never,
-      severity: severity as never,
+      category,
+      severity,
       crop: typeof body.crop === 'string' && body.crop ? body.crop : null,
       sourceName: typeof body.source === 'string' && body.source ? body.source : 'AgriSense',
       sourceUrl: typeof body.source_url === 'string' ? body.source_url : null,
@@ -244,6 +267,7 @@ export const ingestNews = async (_req: AuthRequest, res: Response): Promise<void
 
   let created = 0;
   let skipped = 0;
+  let filtered = 0;
 
   for (const feed of feeds) {
     let xml = '';
@@ -265,6 +289,12 @@ export const ingestNews = async (_req: AuthRequest, res: Response): Promise<void
     })();
 
     for (const item of parsed) {
+      // General news feeds carry plenty of politics and sport; a draft queue
+      // full of it is useless to an admin.
+      if (!isAgricultureRelated(item.title, item.summary)) {
+        filtered += 1;
+        continue;
+      }
       const externalId = `rss:${item.link}`.slice(0, 290);
       const existing = await prisma.newsItem.findUnique({ where: { externalId }, select: { id: true } });
       if (existing) {
@@ -286,5 +316,5 @@ export const ingestNews = async (_req: AuthRequest, res: Response): Promise<void
     }
   }
 
-  res.status(200).json({ success: true, created, skipped, feeds: feeds.length });
+  res.status(200).json({ success: true, created, skipped, filtered, feeds: feeds.length });
 };

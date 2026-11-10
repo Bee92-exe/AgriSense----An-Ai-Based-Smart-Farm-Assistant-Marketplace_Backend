@@ -145,10 +145,15 @@ export async function diagnoseLeafWithRAG(
 ): Promise<DiagnosisResult> {
   requireGeminiKey();
 
+  // Gemini rejects `application/octet-stream` in inline_data, which is exactly
+  // what a multipart photo from the app used to carry. A non-image type is
+  // therefore treated as JPEG instead of failing the whole scan; the bytes are
+  // still the same photo and the vision prompt judges the content.
+  const safeMime = mimeType && mimeType.toLowerCase().startsWith('image/') ? mimeType : 'image/jpeg';
   const imagePart = {
     inlineData: {
       data: imageBuffer.toString('base64'),
-      mimeType: mimeType || 'image/jpeg'
+      mimeType: safeMime
     }
   };
 

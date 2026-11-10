@@ -1,7 +1,9 @@
+import crypto from 'crypto';
 import { Request, Response } from 'express';
 import { Prisma, Role, UserStatus } from '@prisma/client';
 import prisma from '../config/db';
 import { AppError } from '../lib/errors';
+import { hashPassword } from '../lib/password';
 import {
   adminVendorInclude,
   platformUserSelect,
@@ -9,7 +11,10 @@ import {
   toPlatformUser,
 } from '../lib/serializers';
 import type { AuthRequest } from '../middleware/authMiddleware';
-import type { AdminUserStatusInput } from '../validation/admin';
+import type {
+  AdminResetPasswordInput,
+  AdminUserStatusInput,
+} from '../validation/admin';
 
 const VENDOR_STATUSES = ['pending', 'verified', 'rejected', 'suspended'] as const;
 const USER_ROLES = ['farmer', 'vendor', 'expert', 'admin'] as const;
@@ -337,6 +342,74 @@ export const listProducts = async (req: Request, res: Response): Promise<void> =
       hidden: false,
     })),
   });
+};
+
+/**
+ * Issues a one-time temporary password for an account.
+ *
+ * Only the hash is stored: the plaintext is returned exactly once so the admin
+ * can hand it to the owner, and never appears in the database, the audit log or
+ * the server output. Every existing session for that account is revoked, and
+ * the action is recorded against the admin who performed it.
+ */
+export const resetUserPassword = async (req: AuthRequest, res: Response): Promise<void> => {
+  const admin = actor(req);
+  const id = targetId(req);
+  const { reason } = req.body as AdminResetPasswordInput;
+
+  if (id === admin.id) {
+    throw new AppError(
+      400,
+      'cannot_modify_self',
+      'Change your own password from your profile',
+      undefined,
+      'নিজের পাসওয়ার্ড বদলাতে প্রোফাইল স্ক্রিন ব্যবহার করুন।',
+    );
+  }
+
+  const target = await prisma.user.findUnique({
+    where: { id },
+    select: { id: true, name: true, role: true },
+  });
+  if (!target) throw new AppError(404, 'not_found', 'Account not found');
+
+  // 16 characters with upper, lower, digit and symbol, so it satisfies the same
+  // policy the app enforces on registration.
+  const temporaryPassword = `Ag${crypto.randomBytes(9).toString('base64url')}9!`;
+  const passwordHash = await hashPassword(temporaryPassword);
+
+  await prisma.$transaction(async (tx) => {
+    await tx.user.update({
+      where: { id },
+      data: {
+        passwordHash,
+        passwordChangedAt: new Date(),
+        tokenVersion: { increment: 1 },
+        failedLoginAttempts: 0,
+        lockedUntil: null,
+      },
+    });
+
+    await tx.refreshToken.updateMany({
+      where: { userId: id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+
+    await tx.adminAuditLog.create({
+      data: {
+        actorId: admin.id,
+        action: 'user.reset_password',
+        targetType: 'user',
+        targetId: id,
+        reason: reason ?? null,
+        message: `${admin.name} reset the password of ${target.name} (${target.role.toLowerCase()})${
+          reason ? `: ${reason}` : ''
+        }`,
+      },
+    });
+  });
+
+  res.status(200).json({ success: true, temporary_password: temporaryPassword });
 };
 
 export const overview = async (_req: Request, res: Response): Promise<void> => {
